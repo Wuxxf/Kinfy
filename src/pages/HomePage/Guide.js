@@ -21,20 +21,34 @@ import styles from './Guide.less';
 
 const {Step} = Steps;
 
+const StatisticsCard = (props => {
+  const {
+    title,
+    loading,
+    backgroundColor,
+    number,
+  } = props;
+  return(
+    <Card 
+      title={title} 
+      bordered={false} 
+      className={styles.StatisticsCard}
+      hoverable
+      loading={loading}
+      headStyle={{backgroundColor,}}
+      bodyStyle={{backgroundColor,height:'88px'}}
+    >
+      <p className={styles.static}>￥{number}</p>
+    </Card>
+  );
+})
 
-@connect(({ guide }) => ({
+@connect(({ guide , loading }) => ({
   guide,
+  loading:loading.effects['guide/fetch'],
 }))
 class Guides extends Component {
   state = {
-    
-    salesKey: 'sales',
-    // capitalPay:1241,// 资金余额
-    
-    capitalKey: 'customerPay',
-    
-    stockKey:'stockNumber',
-
     data:[],
   }
 
@@ -54,12 +68,9 @@ class Guides extends Component {
       this.setState({
         data: nextProps.guide.data,
         salesPay:nextProps.guide.salesPay,  // 本月销售收入
-        receiptPay:nextProps.guide.receiptPay,// 本月销售收款
-        salesNumber:nextProps.guide.salesNumber,// 本月销售数量
         customerPay:nextProps.guide.customerPay , // 客户欠款
         supplierPay:nextProps.guide.supplierPay, // 欠供应商款
         stockNumber:nextProps.guide.stockNumber,    // 当前库存数量
-        stockPay:nextProps.guide.stockPay, // 当前库存成本
       });
 
 
@@ -71,56 +82,18 @@ class Guides extends Component {
   }
 
   render() {
+    const {
+      supplierPay,
+      salesPay,
+      customerPay,
+      stockNumber,
+      data,
+    } = this.state;
     const { loading } = this.props
     if (this.chart) {
       this.chart.forceFit();
     }
-    // 销售
-    const SalesTabList = [{
-      key: 'sales',
-      tab: '本月销售收入',
-    }, {
-      key: 'receipt',
-      tab: '本月销售收款',
-    }, {
-      key: 'number',
-      tab: '本月销售数量',
-    }];
-    const contentListSales = {
-      sales: <p className={styles.static}>￥{this.state.salesPay}</p>,
-      receipt: <p className={styles.static}>￥{this.state.receiptPay}</p>,
-      number: <p className={styles.static}>{this.state.salesNumber}</p>,
-    };
-    // 资金
-    const CapitalTabList = [
-    // {
-    //   key: 'capital',
-    //   tab: '资金余额',
-    // }, 
-    {
-      key: 'customerPay',
-      tab: '客户欠款',
-    }, {
-      key: 'supplierPay',
-      tab: '欠供应商款',
-    }];
-    const contentListcapital = {
-      // capital: <p className={styles.static}>￥{this.state.capitalPay}</p>,
-      customerPay: <p className={styles.static}>￥{this.state.customerPay}</p>,
-      supplierPay: <p className={styles.static}>￥{this.state.supplierPay}</p>,
-    };
-    // 库存
-    const StockTabList = [{
-      key: 'stockNumber',
-      tab: '当前库存数量',
-    }, {
-      key: 'stockPay',
-      tab: '当前库存成本',
-    }];
-    const contentListstock = {
-      stockNumber: <p className={styles.static}>{this.state.stockNumber}</p>,
-      stockPay: <p className={styles.static}>￥{this.state.stockPay}</p>,
-    };
+
 
     const listData =  [
       {
@@ -186,53 +159,62 @@ class Guides extends Component {
                   </Row>
                 </div>
               </Col> 
-              <Col xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
-                <Card
-                  className={styles.myCard}
+
+              <Col xs={24} sm={24} md={24} lg={6} xl={6} xxl={6}>
+                <StatisticsCard 
+                  title="本月销售收入" 
                   loading={loading}
-                  headStyle={{backgroundColor:'#fba562'}}
-                  bodyStyle={{backgroundColor:'#fba562',height:'118px'}}
-                  style={{ width: '100%'}}
-                  tabList={SalesTabList}
-                  activeTabKey={this.state.salesKey}
-                  onTabChange={(key) => { this.onTabChange(key, 'salesKey'); }}
+                  backgroundColor='#fc8556'
+                  number={salesPay}
+                />
+                
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={6} xl={6} xxl={6}>
+                <Card 
+                  title="欠供应商款" 
+                  bordered={false} 
+                  className={styles.StatisticsCard}
+                  hoverable
+                  loading={loading}
+                  headStyle={{background: '#f8bb39'}}
+                  bodyStyle={{backgroundColor:'#f8bb39',height:'88px'}}
                 >
-                  {contentListSales[this.state.salesKey]}
+                  <p className={styles.static}>￥{supplierPay}</p>
                 </Card>
               </Col>
-              <Col xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
-                <Card
-                  className={styles.myCard}
+              <Col xs={24} sm={24} md={24} lg={6} xl={6} xxl={6}>
+                <Card 
+                  title="客户欠款" 
+                  bordered={false} 
+                  className={styles.StatisticsCard}
+                  hoverable
                   loading={loading}
-                  headStyle={{backgroundColor:'#46c354'}}
-                  bodyStyle={{backgroundColor:'#46c354',height:'118px'}}
-                  style={{ width: '100%'}}
-                  tabList={CapitalTabList}
-                  activeTabKey={this.state.capitalKey}
-                  onTabChange={(key) => { this.onTabChange(key, 'capitalKey'); }}
+                  headStyle={{background: '#47c056'}}
+                  bodyStyle={{backgroundColor:'#47c056',height:'88px'}}
                 >
-                  {contentListcapital[this.state.capitalKey]}
+                  <p className={styles.static}>￥{customerPay}</p>
                 </Card>
               </Col>
-              <Col xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
-                <Card
-                  className={styles.myCard}
+              <Col xs={24} sm={24} md={24} lg={6} xl={6} xxl={6}>
+                <Card 
+                  title="当前库存数量" 
+                  bordered={false} 
+                  className={styles.StatisticsCard}
+                  hoverable
                   loading={loading}
-                  headStyle={{backgroundColor:'#5a91d3'}}
-                  bodyStyle={{backgroundColor:'#5a91d3',height:'118px'}}
-                  style={{ width: '100%'}}
-                  tabList={StockTabList}
-                  activeTabKey={this.state.stockKey}
-                  onTabChange={(key) => { this.onTabChange(key, 'stockKey'); }}
+                  headStyle={{background: '#5b8fd4'}}
+                  bodyStyle={{backgroundColor:'#5b8fd4',height:'88px'}}
                 >
-                  {contentListstock[this.state.stockKey]}
+                  <p className={styles.static}>￥{stockNumber}</p>
                 </Card>
               </Col>
+
+
               <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <div className={styles.rowBackground} style={{marginTop:'10px'}}>
                   <Chart   
                     height={400} 
-                    data={this.state.data} 
+                    data={data} 
                     scale={cols} 
                     forceFit 
                     padding="auto"
@@ -243,7 +225,7 @@ class Guides extends Component {
                     <span className={styles.quickHand}>
                       本月销售收入
                     </span>
-                    <Axis name="day" title  line={{stroke: "#E6E6E6"}} />
+                    <Axis name="day" line={{stroke: "#E6E6E6"}} title />
                     <Axis name="value" line={{stroke: "#E6E6E6"}}  />
                     <Tooltip
                       crosshairs={{
@@ -256,7 +238,7 @@ class Guides extends Component {
               </Col>
             </Row>
           </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6} >
+          <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6}>
             <div className={styles.rowBackground}>
               <List
                 size="large"

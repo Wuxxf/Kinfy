@@ -1,0 +1,58 @@
+@import '~antd/lib/style/themes/default.less';
+@import '../../utils/utils.less';
+
+.openbillCard{
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  :global{
+    .ant-card-body{
+      padding: 3px 10px 0 5px;
+    }
+  }
+}
+.openbillForm{
+  :global{
+    .ant-form-item{
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.customerButton{
+  span{
+    display: block;
+    overflow:hidden; //超出的文本隐藏
+    text-overflow:ellipsis; //溢出用省略号显示
+    white-space:nowrap; //溢出不换行
+    width:100%;
+  }
+  // width: 125px;
+}
+
+.orderNum {
+  line-height: 32px;
+  display: inline-block;
+}
+
+.iconStyles {
+  color: #1890ff;
+  border: 1px;
+  padding: 5px;
+}
+
+// table详情的边框
+.tableDetail{
+  :global{
+    .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td{
+      border: 1px solid#1890ff;
+    }
+  }
+  // padding: 5px;
+  border: #1890ff;
+}
+// 销售收款Table空
+.tableEmpty{
+  text-align: center;
+  padding: 24px;
+}

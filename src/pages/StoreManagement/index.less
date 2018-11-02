@@ -1,0 +1,33 @@
+@import '~antd/lib/style/themes/default.less';
+
+
+
+// Kinfy
+.cardBackground{
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  :global{
+    .ant-card-body{
+      padding: 3px 10px 10px 5px;
+    }
+  }
+}
+
+.success,
+.warning,
+.error {
+  transition: color 0.3s;
+}
+
+.success {
+  color: @success-color;
+}
+
+.warning {
+  color: @warning-color;
+}
+
+.error {
+  color: @error-color;
+}

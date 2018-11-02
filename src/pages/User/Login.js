@@ -56,9 +56,6 @@ class LoginPage extends Component {
           ...values,
           type,
         },
-        callback:(res)=>{
-          console.log(res)
-        }
       });
     }
   };
@@ -75,7 +72,7 @@ class LoginPage extends Component {
 
   render() {
     const { login, submitting } = this.props;
-    const { type, autoLogin ,loginError} = this.state;
+    const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
         <Login

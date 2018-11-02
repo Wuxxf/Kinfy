@@ -31,3 +31,47 @@ ul,
 ol {
   list-style: none;
 }
+
+
+.rowBackground{
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  :global{
+    .ant-card-body{
+      padding: 3px 10px 10px 5px;
+    }
+  }
+}
+
+.topButton {
+  background-color: #e6e6e6;
+  border: #fff;
+  span{
+    color: #333;
+  }
+}
+.topButton:hover{
+  background-color: #c2c2c2;
+  border: #c2c2c2;
+  span{
+    columns: #1890ff;
+  }
+}
+
+// Table 组件自适应
+.tableAdaption {
+  overflow-x: auto;
+}
+
+
+.customerButton{
+  span{
+    display: block;
+    overflow:hidden; //超出的文本隐藏
+    text-overflow:ellipsis; //溢出用省略号显示
+    white-space:nowrap; //溢出不换行
+    width:100%;
+  }
+  width: 125px;
+}
