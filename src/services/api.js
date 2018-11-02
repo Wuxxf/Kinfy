@@ -124,3 +124,11 @@ export async function queryNotices() {
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
+
+// Kinfy
+/* ********* 起始页 start ********* */
+export async function queryGuide() {
+  return request('/api/index');
+}
+/* ********* 起始页 end ********* */
+

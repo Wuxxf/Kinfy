@@ -56,6 +56,9 @@ class LoginPage extends Component {
           ...values,
           type,
         },
+        callback:(res)=>{
+          console.log(res)
+        }
       });
     }
   };
@@ -72,7 +75,7 @@ class LoginPage extends Component {
 
   render() {
     const { login, submitting } = this.props;
-    const { type, autoLogin } = this.state;
+    const { type, autoLogin ,loginError} = this.state;
     return (
       <div className={styles.main}>
         <Login
@@ -86,12 +89,12 @@ class LoginPage extends Component {
 
           <h3>登录</h3><br />
           {login.status === 'error' &&
-              !submitting &&
+              !submitting && 
               this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
-          <UserName name="mobile_phone" placeholder="admin/user" />
+          <UserName name="mobile_phone" placeholder={formatMessage({id:"app.login.usrname-placeholder"})} />
           <Password
             name="password"
-            placeholder="888888/123456"
+            placeholder={formatMessage({id:"app.login.password-placeholder"})}
             onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
           />    
 

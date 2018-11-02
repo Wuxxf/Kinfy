@@ -19,7 +19,7 @@ export default [
     authority: [1, 2],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis' },
+      { path: '/', redirect: '/home-page/guide' },
       {
         path: '/dashboard',
         name: 'dashboard',
@@ -256,6 +256,15 @@ export default [
           },
         ],
       },
+      // kinfy start
+      {
+        name: 'home-page',
+        icon: 'tags-o',
+        path: '/home-page/guide',
+        component: './HomePage/Guide',
+      },
+
+      // Kinfy end
       {
         component: '404',
       },

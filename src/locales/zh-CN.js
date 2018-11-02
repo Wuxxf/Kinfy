@@ -25,7 +25,7 @@ export default {
   'form.email.placeholder': '邮箱',
   'form.password.placeholder': '至少6位密码，区分大小写',
   'form.confirm-password.placeholder': '确认密码',
-  'form.phone-number.placeholder': '位手机号',
+  'form.phone-number.placeholder': '请输入手机号',
   'form.verification-code.placeholder': '验证码',
   'form.title.label': '标题',
   'form.title.placeholder': '给目标起个名字',
@@ -105,6 +105,8 @@ export default {
   // 'app.login.message-invalid-credentials': '账户或密码错误（admin/888888）',
   'app.login.message-invalid-credentials': '账户或密码错误',
   'app.login.message-invalid-verification-code': '验证码错误',
+  'app.login.usrname-placeholder': '请输入用户名/13333333333',  // kinfy
+  'app.login.password-placeholder': '请输入密码/888888',  // kinfy
   'app.login.tab-login-credentials': '账户密码登录',
   'app.login.tab-login-mobile': '手机号登录',
   'app.login.remember-me': '自动登录',
@@ -115,7 +117,7 @@ export default {
   'app.register.register': '注册',
   'app.register.get-verification-code': '获取验证码',
   'app.register.sing-in': '使用已有账户登录',
-  'app.register-result.msg': '你的账户：{email} 注册成功',
+  'app.register-result.msg': '你的账户：{mobile_phone} 注册成功',
   'app.register-result.activation-email':
     '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
   'app.register-result.back-home': '返回首页',
@@ -285,5 +287,6 @@ export default {
     '配置栏只在开发环境用于预览，生产环境不会展现，请拷贝后手动修改配置文件',
 
   // kinfy
-  
+  'menu.home-page':'起始页',
+
 };

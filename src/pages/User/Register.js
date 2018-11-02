@@ -3,7 +3,17 @@ import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import Link from 'umi/link';
 import router from 'umi/router';
-import { Form, Input, Button, Select, Row, Col, Popover, Progress } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  // Row,
+  // Col,
+  Alert,
+  Popover,
+  Progress
+} from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;
@@ -41,7 +51,7 @@ const passwordProgressMap = {
 @Form.create()
 class Register extends Component {
   state = {
-    count: 0,
+    // count: 0,
     confirmDirty: false,
     visible: false,
     help: '',
@@ -50,8 +60,8 @@ class Register extends Component {
 
   componentDidUpdate() {
     const { form, register } = this.props;
-    const account = form.getFieldValue('mail');
-    if (register.status === 'ok') {
+    const account = form.getFieldValue('mobile_phone');
+    if (register.status === 0) {
       router.push({
         pathname: '/user/register-result',
         state: {
@@ -65,17 +75,17 @@ class Register extends Component {
     clearInterval(this.interval);
   }
 
-  onGetCaptcha = () => {
-    let count = 59;
-    this.setState({ count });
-    this.interval = setInterval(() => {
-      count -= 1;
-      this.setState({ count });
-      if (count === 0) {
-        clearInterval(this.interval);
-      }
-    }, 1000);
-  };
+  // onGetCaptcha = () => {
+  //   let count = 59;
+  //   this.setState({ count });
+  //   this.interval = setInterval(() => {
+  //     count -= 1;
+  //     this.setState({ count });
+  //     if (count === 0) {
+  //       clearInterval(this.interval);
+  //     }
+  //   }, 1000);
+  // };
 
   getPasswordStatus = () => {
     const { form } = this.props;
@@ -89,18 +99,28 @@ class Register extends Component {
     return 'poor';
   };
 
+  renderMessage = content => (
+    <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
+  );
+
   handleSubmit = e => {
     e.preventDefault();
     const { form, dispatch } = this.props;
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
-        const { prefix } = this.state;
+
         dispatch({
           type: 'register/submit',
-          payload: {
-            ...values,
-            prefix,
-          },
+          payload: values,
+          callback:(res)=>{
+            if(!res.errcode){
+              const keys=Object.keys(res)[0]
+              this.setState({
+                errorText:res[keys],
+                isError:true,
+              });
+            }
+          }
         });
       }
     });
@@ -175,15 +195,22 @@ class Register extends Component {
 
   render() {
     const { form, submitting } = this.props;
+    const { isError , errorText } = this.state;
     const { getFieldDecorator } = form;
-    const { count, prefix, help, visible } = this.state;
+    const {
+      // count,
+      prefix,
+      help,
+      visible
+    } = this.state;
     return (
       <div className={styles.main}>
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
+        { isError && this.renderMessage(errorText)}
         <Form onSubmit={this.handleSubmit}>
-          <FormItem>
+          {/* <FormItem>
             {getFieldDecorator('mail', {
               rules: [
                 {
@@ -198,6 +225,37 @@ class Register extends Component {
             })(
               <Input size="large" placeholder={formatMessage({ id: 'form.email.placeholder' })} />
             )}
+          </FormItem> */}
+          <FormItem>
+            <InputGroup compact>
+              <Select
+                size="large"
+                value={prefix}
+                onChange={this.changePrefix}
+                style={{ width: '20%' }}
+              >
+                <Option value="86">+86</Option>
+                <Option value="87">+87</Option>
+              </Select>
+              {getFieldDecorator('mobile_phone', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'validation.phone-number.required' }),
+                  },
+                  {
+                    pattern: /^\d{11}$/,
+                    message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
+                  },
+                ],
+              })(
+                <Input
+                  size="large"
+                  style={{ width: '80%' }}
+                  placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
+                />
+              )}
+            </InputGroup>
           </FormItem>
           <FormItem help={help}>
             <Popover
@@ -231,7 +289,7 @@ class Register extends Component {
             </Popover>
           </FormItem>
           <FormItem>
-            {getFieldDecorator('confirm', {
+            {getFieldDecorator('password_confirmation', {
               rules: [
                 {
                   required: true,
@@ -249,38 +307,8 @@ class Register extends Component {
               />
             )}
           </FormItem>
-          <FormItem>
-            <InputGroup compact>
-              <Select
-                size="large"
-                value={prefix}
-                onChange={this.changePrefix}
-                style={{ width: '20%' }}
-              >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-              </Select>
-              {getFieldDecorator('mobile', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'validation.phone-number.required' }),
-                  },
-                  {
-                    pattern: /^\d{11}$/,
-                    message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
-                  },
-                ],
-              })(
-                <Input
-                  size="large"
-                  style={{ width: '80%' }}
-                  placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
-                />
-              )}
-            </InputGroup>
-          </FormItem>
-          <FormItem>
+          
+          {/* <FormItem>
             <Row gutter={8}>
               <Col span={16}>
                 {getFieldDecorator('captcha', {
@@ -310,7 +338,7 @@ class Register extends Component {
                 </Button>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> */}
           <FormItem>
             <Button
               size="large"

@@ -13,12 +13,13 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
+    *login({ payload,callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
+      if (callback) callback(response); // kinfy
       // Login successfully
       if (response.status === 'ok') {
         reloadAuthorized();
@@ -72,7 +73,8 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       // setAuthority(payload.currentAuthority);
-      setAuthority(payload.data.data);
+      if(payload.data)
+        setAuthority(payload.data.data);
       return {
         ...state,
         status: payload.status,
