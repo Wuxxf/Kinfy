@@ -113,7 +113,7 @@ class Register extends Component {
           type: 'register/submit',
           payload: values,
           callback:(res)=>{
-            if(!res.errcode){
+            if(res.errcode !== 0){
               const keys=Object.keys(res)[0]
               this.setState({
                 errorText:res[keys],

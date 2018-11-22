@@ -20,9 +20,9 @@ const plugins = [
         default: 'zh-CN', // default zh-CN
         baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
       },
-      dynamicImport: {
-        loadingComponent: './components/PageLoading/index',
-      },
+      // dynamicImport: {
+      //   loadingComponent: './components/PageLoading/index',
+      // },   //  按需加载
       ...(!process.env.TEST && os.platform() === 'darwin'
         ? {
             dll: {
@@ -47,6 +47,7 @@ if (process.env.APP_TYPE === 'site') {
 }
 
 export default {
+  history: 'hash',
   // add for transfer to umi
   plugins,
   targets: {
@@ -70,7 +71,7 @@ export default {
       target: 'http://118.25.122.55/',
       changeOrigin: true,
       // pathRewrite: { '^/server': '' },
-    },
+    },    // no-mock
   },
   ignoreMomentLocale: true,
   lessLoaderOptions: {

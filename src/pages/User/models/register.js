@@ -12,7 +12,7 @@ export default {
   effects: {
     *submit({ payload, callback }, { call, put }) {
       const response = yield call(fakeRegister, payload);
-      console.log(response)
+      // console.log(response)
       yield put({
         type: 'registerHandle',
         payload: response,
@@ -27,11 +27,10 @@ export default {
     registerHandle(state,{payload}) {
       // setAuthority(0);
       reloadAuthorized();
-      console.log(payload)
+      // console.log(payload)
       return {
         ...state,
-        // error:payload.mobile_phone,
-        // status: payload.errcode,
+        status: payload.errcode,
       };
     },
   },

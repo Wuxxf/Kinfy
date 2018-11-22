@@ -1,5 +1,8 @@
 import React from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import {
+  // formatMessage,
+  FormattedMessage
+} from 'umi/locale';
 import { Button } from 'antd';
 import Link from 'umi/link';
 import Result from '@/components/Result';
@@ -7,11 +10,11 @@ import styles from './RegisterResult.less';
 
 const actions = (
   <div className={styles.actions}>
-    <a href="">
+    {/* <a href="">
       <Button size="large" type="primary">
         <FormattedMessage id="app.register-result.view-mailbox" />
       </Button>
-    </a>
+    </a> */}
     <Link to="/">
       <Button size="large">
         <FormattedMessage id="app.register-result.back-home" />
@@ -28,11 +31,11 @@ const RegisterResult = ({ location }) => (
       <div className={styles.title}>
         <FormattedMessage
           id="app.register-result.msg"
-          values={{ email: location.state ? location.state.account : 'AntDesign@example.com' }}
+          values={{ mobile_phone: location.state ? location.state.account : 'Kinfy@example.com' }}
         />
       </div>
     }
-    description={formatMessage({ id: 'app.register-result.activation-email' })}
+    // description={formatMessage({ id: 'app.register-result.activation-email' })}
     actions={actions}
     style={{ marginTop: 56 }}
   />

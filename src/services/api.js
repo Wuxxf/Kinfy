@@ -180,11 +180,19 @@ export async function queryIndustry() {
 /* ********* 系统公告 start ********* */
 // 查询公告
 export async function querySystemBulletin() {
-  return request('api/noticestate/list');
+  return request('/api/noticestate/list');
 }
+
+// 公告详情
+export async function bulletinDetails(params) {
+  return request(`/api/systemnotice/${params.id}`,{
+    // method: 'POST',
+  });
+}
+
 // 是否已读
 export async function isreadSystemNotice(params) {
-  return request(`api/noticestate/${params.id}/update`, {
+  return request(`/api/noticestate/${params.id}/update`, {
     method: 'POST',
     body: {
       is_read: params.is_read,

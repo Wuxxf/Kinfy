@@ -7,3 +7,15 @@ export async function query() {
 export async function queryCurrent() {
   return request('/api/currentUser');
 }
+
+
+// Kinfy 
+
+export async function queryHeaderStore() {
+  return request('/api/headerStore');
+}
+
+export async function replaceStore(params) {
+  return request(`/api/enterStore/${params.id}`);
+}
+

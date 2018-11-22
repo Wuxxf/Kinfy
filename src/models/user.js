@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent } from '@/services/user';
+import { query as queryUsers, queryCurrent , queryHeaderStore , replaceStore } from '@/services/user';
 
 export default {
   namespace: 'user',
@@ -23,6 +23,22 @@ export default {
         payload: response,
       });
     },
+    *fetchStore(_, { call, put }) {
+      const response = yield call(queryHeaderStore);
+      yield put({
+        type: 'saveStore',
+        payload: response,
+      });
+    },
+    *replaceStore({ payload, callback }, { call, put }) {
+      const response = yield call(replaceStore, payload);
+      yield put({
+        type: 'store',
+        payload: response,
+      });
+      if (callback) callback(response);
+    },
+
   },
 
   reducers: {
@@ -38,6 +54,12 @@ export default {
         currentUser: action.payload.data || {},
       };
     },
+    saveStore(state, action) {
+      return {
+        ...state,
+        currentStore: action.payload.data || {},
+      };
+    },
     changeNotifyCount(state, action) {
       return {
         ...state,
@@ -45,6 +67,12 @@ export default {
           ...state.currentUser,
           notifyCount: action.payload,
         },
+      };
+    },
+    store(state, payload) {
+      return {
+        ...state,
+        ...payload,
       };
     },
   },

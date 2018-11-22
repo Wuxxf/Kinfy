@@ -694,7 +694,7 @@ class customerManagement extends Component {
           </Col>
         </Row>
         <div style={{ overflow: 'hidden' }}>
-          <span style={{ float: 'right', marginBottom: 24 }}>
+          <span style={{ float: 'right'}}>
             <Button type="primary" htmlType="submit">
                 查询
             </Button>

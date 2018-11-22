@@ -12,6 +12,7 @@ import {
   updateEmployee,
   delEmployee,
   queryRole,
+  bulletinDetails
 } from '@/services/api';
 
 export default {
@@ -48,7 +49,7 @@ export default {
       });
       if (callback) callback(response);
     },
-    
+
     // 获取员工
     *fetchEmployee(_, { call, put }) {
       const response = yield call(queryEmployee);
@@ -67,6 +68,18 @@ export default {
       });
       if (callback) callback(response);
     },
+
+
+    // 公告详情
+    *bulletinDetails({payload,callback }, { call, put }) {
+      const response = yield call(bulletinDetails,payload);
+      yield put({
+        type: 'fetchDetails',
+        payload: response,
+      });
+      if (callback) callback(response);
+    },
+
 
     // 是否已读
     *isread({ payload, callback }, { call, put }) {
@@ -209,6 +222,7 @@ export default {
         roleData: action.payload.data.data,
       };
     },
+
 
     save(state, payload) {
       return {

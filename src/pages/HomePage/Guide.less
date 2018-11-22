@@ -1,19 +1,81 @@
 @import '~antd/lib/style/themes/default.less';
 
-.rowBackground{
-  margin-bottom: 8px;
-  padding: 12px;
-  border-radius: 5px;
-  background: #fff;
-  // box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+.code-box-shape{
+  width: 64px;
+  height: 64px;
+  background-color: beige;
 }
 
-.quickHand{
+.title{
   font-weight: bolder;
   font-size: 16px;
+
+}
+
+.divider{
+  :global{
+    .ant-divider-horizontal{
+      margin-top: 12px;
+    }
+  }
+}
+
+.tooltip-bg{
+  :global{
+    .ant-tooltip  .ant-tooltip-placement-left
+    .ant-tooltip-inner{
+      background-color: white;
+      color:rgb(0, 0, 0)
+    }
+  }
+}
+
+.notice-content{
+  img{
+    width: 100%
+  }
+}
+.no-commonly-used{
+  text-align: center;
+}
+.commonly-used-box{
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  color: unset;
+  .commonly-used-del{
+    cursor: 'pointer';
+    position: absolute;
+    right: 0;
+    transform: translateX(50%);
+    transform-origin: 100%;
+    top: -10px;
+    height: 20px;
+    border-radius: 10px;
+    min-width: 20px;
+    background: #f5222d;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    padding: 0 6px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    box-shadow: 0 0 0 1px #fff;
+  }
 }
 
 .static{
+  width: 100%;
   vertical-align: middle;
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif;
@@ -21,7 +83,16 @@
   font-size: 2em;
   color: #fff;
   // line-height: 24px;
+  span{
+    display:block;
+    // float:left;
+    overflow-x: hidden;
+    // overflow-x:scroll;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+  }
 }
+
 
 .StatisticsCard{
   :global{

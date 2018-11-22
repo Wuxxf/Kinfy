@@ -1,5 +1,5 @@
 import fetch from 'dva/fetch';
-import { notification } from 'antd';
+// import { notification } from 'antd';
 import router from 'umi/router';
 import hash from 'hash.js';
 import { isAntdPro } from './utils';
@@ -27,34 +27,34 @@ const checkStatus = response => {
     return response;
   }
   const errortext = codeMessage[response.status] || response.statusText;
-  notification.error({
-    message: `请求错误 ${response.status}: ${response.url}`,
-    description: errortext,
-  });
+  // notification.error({
+  //   message: `请求错误 ${response.status}: ${response.url}`,
+  //   description: errortext,
+  // });
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;
   throw error;
 };
 
-const cachedSave = (response, hashcode) => {
-  /**
-   * Clone a response data and store it in sessionStorage
-   * Does not support data other than json, Cache only json
-   */
-  const contentType = response.headers.get('Content-Type');
-  if (contentType && contentType.match(/application\/json/i)) {
-    // All data is saved as text
-    response
-      .clone()
-      .text()
-      .then(content => {
-        sessionStorage.setItem(hashcode, content);
-        sessionStorage.setItem(`${hashcode}:timestamp`, Date.now());
-      });
-  }
-  return response;
-};
+// const cachedSave = (response, hashcode) => {
+//   /**
+//    * Clone a response data and store it in sessionStorage
+//    * Does not support data other than json, Cache only json
+//    */
+//   const contentType = response.headers.get('Content-Type');
+//   if (contentType && contentType.match(/application\/json/i)) {
+//     // All data is saved as text
+//     response
+//       .clone()
+//       .text()
+//       .then(content => {
+//         sessionStorage.setItem(hashcode, content);
+//         sessionStorage.setItem(`${hashcode}:timestamp`, Date.now());
+//       });
+//   }
+//   return response;
+// };
 
 /**
  * Requests a URL, returning a promise.
@@ -120,7 +120,7 @@ export default function request(url, option) {
   }
   return fetch(url, newOptions)
     .then(checkStatus)
-    .then(response => cachedSave(response, hashcode))
+    // .then(response => cachedSave(response, hashcode))    // Kinfy
     .then(response => {
       // DELETE and 204 do not return data by default
       // using .json will report an error.

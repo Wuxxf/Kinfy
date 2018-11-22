@@ -76,6 +76,21 @@ class HeaderView extends PureComponent {
     }
   };
 
+  replaceStore = ({ key }) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/replaceStore',
+      payload:{
+        id:key,
+      },
+      callback:()=>{
+        location.reload();
+      }
+    });
+
+  };
+
+
   handleNoticeVisibleChange = visible => {
     if (visible) {
       const { dispatch } = this.props;
@@ -132,6 +147,7 @@ class HeaderView extends PureComponent {
             onCollapse={handleMenuCollapse}
             onNoticeClear={this.handleNoticeClear}
             onMenuClick={this.handleMenuClick}
+            replaceStore={this.replaceStore}
             onNoticeVisibleChange={this.handleNoticeVisibleChange}
             {...this.props}
           />
@@ -140,6 +156,7 @@ class HeaderView extends PureComponent {
             onCollapse={handleMenuCollapse}
             onNoticeClear={this.handleNoticeClear}
             onMenuClick={this.handleMenuClick}
+            replaceStore={this.replaceStore}
             onNoticeVisibleChange={this.handleNoticeVisibleChange}
             {...this.props}
           />
@@ -156,6 +173,7 @@ class HeaderView extends PureComponent {
 
 export default connect(({ user, global, setting, loading }) => ({
   currentUser: user.currentUser,
+  currentStore:user.currentStore,
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
