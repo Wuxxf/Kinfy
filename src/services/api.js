@@ -135,6 +135,18 @@ export async function logout() {
 export async function queryGuide() {
   return request('/api/index');
 }
+export async function addCommonlyUsed(params) {
+  return request('/api/userButton/add', {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
+export async function delCommonlyUsed(params) {
+  return request(`/api/userButton/${params.id}/del`, {method: 'POST'});
+}
+
 /* ********* 起始页 end ********* */
 
 /* ********* 门店管理 start ********* */

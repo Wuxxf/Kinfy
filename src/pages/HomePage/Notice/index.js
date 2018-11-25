@@ -88,7 +88,7 @@ class Notice extends Component {
     }
 
     return (
-      <div className={commonStyle["rowBackground-div"]}>
+      <div className={commonStyle["rowBackground-div"]} style={{height:'266px'}}>
         <List
           header={<div><span className={styles.title}><Icon type="pushpin" theme="twoTone" style={{float:'right',fontSize:22}} />公告</span></div>}
           dataSource={notice}

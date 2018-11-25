@@ -51,6 +51,7 @@ module.exports = {
     'no-plusplus': [0],
     'no-extra-boolean-cast': [0],
     'react/destructuring-assignment':[0],
+    // 'react/no-array-index-key':[0],
     // 'no-const-assign':[0],
 
   },

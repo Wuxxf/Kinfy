@@ -17,6 +17,7 @@ class Guides extends Component {
   state = {
     chartData:[],
     notice:[],
+    commonlyUsed:[],
   }
 
   componentDidMount() {
@@ -41,7 +42,9 @@ class Guides extends Component {
         customerPay:nextProps.guide.customerPay ,   // 客户欠款
         supplierPay:nextProps.guide.supplierPay,    // 欠供应商款
         stockNumber:nextProps.guide.stockNumber,    // 当前库存数量
+        commonlyUsed:nextProps.guide.commonlyUsed,
       });
+
     }
   }
 
@@ -57,6 +60,7 @@ class Guides extends Component {
       stockNumber,
       chartData,
       notice,
+      commonlyUsed,
     } = this.state;
 
     const statisticsProps = {
@@ -82,7 +86,7 @@ class Guides extends Component {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={5} xxl={5}>
             <Notice notice={notice} />
-            <CommonlyUsed />
+            <CommonlyUsed commonlyUsed={commonlyUsed} />
           </Col>
         </Row>
       </div>
