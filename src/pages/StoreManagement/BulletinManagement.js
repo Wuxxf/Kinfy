@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Tabs, Table, Badge, Modal, Button, Divider ,Card } from 'antd';
+import { Table, Badge, Button, Divider } from 'antd';
 import BulletinAdd from '@/components/BulletinAdd';
+import NoticeDetails from '@/components/NoticeDetails';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-
 import commonStyle from '../../global.less'; // 公共样式
 
-const { TabPane } = Tabs;
+
 const statusMap = ['error', 'success'];
 const status = ['未读', '已读'];
 
-
-
-@connect(({ store }) => ({
+@connect(({ store ,loading}) => ({
   store,
+  loading:loading.effects['store/systemBulletin']
 }))
 class BulletinManagement extends Component {
   state = {
     detailsVisible: false,
-    detailscontent: '',
-    tabsKey:1,
+    noticeDetail:{},
   };
 
   componentDidMount() {
@@ -36,49 +34,8 @@ class BulletinManagement extends Component {
     });
   };
 
-  // 详情
-  details = (e, record) => {
-    const { dispatch } = this.props;
-    const rowData = record;
-    dispatch({
-      type: 'store/isread',
-      payload: {
-        id: record.id,
-        is_read: 1,
-      },
-      callback: () => {
-        rowData.is_read = 1;
-        this.setState({
-          detailsVisible: true,
-          detailscontent: record.systemnotice.content,
-        });
-      },
-    });
-  };
 
-  // 标记成未读
-  notRead = (e, record) => {
-    const { dispatch } = this.props;
-    const rowData = record;
 
-    const bulletinId = record.id;
-    dispatch({
-      type: 'store/isread',
-      payload: {
-        id: bulletinId,
-        is_read: 0,
-      },
-      callback: () => {
-        rowData.is_read = 0;
-      },
-    });
-  };
-
-  tabsOnchange = e => {
-    this.setState({
-      tabsKey:Number(e),
-    })
-  };
 
   showAdd = () =>{
     this.setState({
@@ -93,34 +50,90 @@ class BulletinManagement extends Component {
   }
 
   fetchBulletin = (values) =>{
-    
+
     console.log(values) // eslint-disable-line
     this.setState({
       addBulletin:false,
     })
   }
 
+  notRead = (record) =>{
+    const { notice } = record;
+    const { dispatch } = this.props;
+    dispatch({
+      type:'store/isread',
+      payload:{
+        id:notice.id,
+        is_read:0,
+      },
+      callback:()=>{
+        dispatch({
+          type: 'store/systemBulletin',
+        });
+      }
+    })
+  }
+
+
+  show = (id) => {
+    const { dispatch } = this.props;
+    this.setState({
+      detailsVisible:true
+    })
+    dispatch({
+      type:'store/bulletinDetails',
+      payload:{id},
+      callback:(res)=>{
+        this.setState({
+          noticeDetail:res.data
+        })
+      }
+    })
+
+  }
+
+  handleOk=()=>{
+    this.setState({
+      detailsVisible:false
+    })
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'store/systemBulletin',
+    });
+
+  }
+
+  handleCancel=()=>{
+    this.setState({
+      detailsVisible:false
+    })
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'store/systemBulletin',
+    });
+  }
+
   render() {
     const { store, loading } = this.props;
-    const { detailsVisible , tabsKey , addBulletin , detailscontent} = this.state;
+    const { detailsVisible  , addBulletin } = this.state;
     const { systemBulletinData } = store;
 
-    // 系统公告columns
+    // 公告columns
     const SystemBulletinColumns = [
       {
         title: '公告类型',
-        dataIndex: 'systemnotice.notice_type',
-        key: 'systemnotice.notice_type',
+        dataIndex: 'notice_type',
+        key: 'notice_type',
       },
       {
         title: '公告主题',
-        dataIndex: 'systemnotice.title',
-        key: 'systemnotice.title',
+        dataIndex: 'title',
+        key: 'title',
       },
       {
         title: '是否已读',
-        dataIndex: 'is_read',
-        key: 'is_read',
+        dataIndex: 'notice.is_read',
+        key: 'notice.is_read',
         filters: [
           {
             text: status[0],
@@ -146,105 +159,41 @@ class BulletinManagement extends Component {
         key: 'operation',
         render: record => (
           <span>
-            <a onClick={e => this.details(e, record)}>详情</a>
+            <a onClick={() => this.show(record.id)}>详情</a>
             <Divider type="vertical" />
-            <a onClick={e => this.notRead(e, record)}>标记成未读</a>
+            <a onClick={() => this.notRead(record)}>标记成未读</a>
           </span>
         ),
       },
     ];
 
-    // 门店公告columns
-    const StoreBulletinColumns = [
-      {
-        title: '公告主题',
-        dataIndex: 'storenotice.title',
-        key: 'storenotice.title',
-      },
-      {
-        title: '是否已读',
-        dataIndex: 'is_read',
-        key: 'is_read',
-        filters: [
-          {
-            text: status[0],
-            value: 0,
-          },
-          {
-            text: status[1],
-            value: 1,
-          },
-        ],
-        onFilter: (value, record) => record.is_read.toString() === value,
-        render(val) {
-          return <Badge status={statusMap[val]} text={status[val]} />;
-        },
-      },
-      {
-        title: '发布人',
-        dataIndex: 'user.name',
-        key: 'user.name',
-      },
-      {
-        title: '发布时间',
-        dataIndex: 'created_at',
-        key: 'created_at',
-      },
-      {
-        title: '操作',
-        key: 'operation',
-        render: record => (
-          <span>
-            <a onClick={e => this.details(e, record)}>详情</a>
-            <Divider type="vertical" />
-            <a onClick={e => this.notRead(e, record)}>标记成未读</a>
-          </span>
-        ),
-      },
-    ];
-
-    const tabsProps = {
-      defaultActiveKey: '1',
-      tabBarExtraContent: tabsKey===1?<Button onClick={this.showAdd}>发布公告</Button>:null,
+    const detailsProps ={
+      visible:detailsVisible,
+      handleOk:this.handleOk,
+      handleCancel:this.handleCancel,
+      noticeDetail:this.state.noticeDetail,
     }
 
     return (
-      <PageHeaderWrapper title="公告管理">
-        <Card className={commonStyle.rowBackground}>
-          <Tabs {...tabsProps} onChange={this.tabsOnchange}>
-            <TabPane tab="门店公告" key="1">
-              <Table
-                columns={StoreBulletinColumns}
-                dataSource={[]}
-                loading={loading}
-                pagination={false}
-                bordered
-                locale={{ emptyText: '暂无公告' }}
-                // rowKey={record => record.id}
-              />
-            </TabPane>
-            <TabPane tab="系统公告" key="2">
-              <Table
-                columns={SystemBulletinColumns}
-                dataSource={systemBulletinData}
-                loading={loading}
-                pagination={false}
-                bordered
-                locale={{ emptyText: '暂无公告' }}
-                rowKey={record => record.id}
-              />
-            </TabPane>
-          </Tabs>
-          <Modal
-            title="公告详情"
-            visible={detailsVisible}
-            onOk={this.handleOk}
-            onCancel={this.handleOk}
-          >
-            <div dangerouslySetInnerHTML={{ __html: detailscontent }} />
-          </Modal>
+      <PageHeaderWrapper
+        title="公告管理"
+        action={
+          <Button type="primary" onClick={this.showAdd}>发布公告</Button>
+        }
+      >
+        <div className={commonStyle['rowBackground-div']}>
+          <Table
+            columns={SystemBulletinColumns}
+            dataSource={systemBulletinData}
+            loading={loading}
+            pagination={false}
+            bordered
+            locale={{ emptyText: '暂无公告' }}
+            rowKey={record => record.id}
+          />
+          <NoticeDetails {...detailsProps} />
           <BulletinAdd visible={addBulletin} onCancel={this.cloesAdd} onOk={this.fetchBulletin} />
-        </Card>
+        </div>
       </PageHeaderWrapper>
     );
   }

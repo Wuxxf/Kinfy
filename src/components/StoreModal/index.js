@@ -23,7 +23,7 @@ const { Option } = Select;
   loading: loading.models.store,
 }))
 @Form.create()
-export default class StoreModal extends Component {
+class StoreModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +48,7 @@ export default class StoreModal extends Component {
         this.setState({
           fileList:[],
         })
-      } 
+      }
     }
   }
 
@@ -63,7 +63,7 @@ export default class StoreModal extends Component {
         onOk(fieldsValue);
       });
     };
-  
+
     const filter=(inputValue, path)=> {
       return (path.some(option => (option.label).toLowerCase().indexOf(inputValue.toLowerCase()) > -1));
     }
@@ -116,12 +116,12 @@ export default class StoreModal extends Component {
       destroyOnClose={this.props.destroyOnClose}
     >
       <Row gutter={18}>
-        <FormItem style={{margin:0}} >
+        <FormItem style={{margin:0}}>
           {form.getFieldDecorator('id', {
             initialValue:initialValue.id?initialValue.id:undefined,
         })(<span />)}
         </FormItem>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="门店名称">
             {form.getFieldDecorator('name', {
               rules: [{ required: true, message: '请输入门店名称' }],
@@ -129,7 +129,7 @@ export default class StoreModal extends Component {
             })(<Input placeholder="请输入门店名称" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="经营方式">
             {form.getFieldDecorator('operation_mode', {
               initialValue:initialValue.operation_mode?initialValue.operation_mode:1,
@@ -142,7 +142,7 @@ export default class StoreModal extends Component {
             )}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="所属行业">
             {form.getFieldDecorator('industry_id', {
               rules: [{ required: true, message: '请选择所属行业' }],
@@ -160,13 +160,13 @@ export default class StoreModal extends Component {
             )}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="联系电话">
             {form.getFieldDecorator('mobile_phone', {
               rules: [
                 { required: true, message: '请设置联系电话' },
                 {
-                  pattern: /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/,
+                  pattern: /^1\d{10}$/,
                   message: '请输入正确的手机号码！',
                 },
               ],
@@ -174,7 +174,7 @@ export default class StoreModal extends Component {
             })(<Input placeholder="请设置门店电话" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="QQ">
             {form.getFieldDecorator('QQ', {
               rules: [
@@ -187,13 +187,27 @@ export default class StoreModal extends Component {
             })(<Input placeholder="请设置QQ号" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="门店地址">
             {form.getFieldDecorator('store_address', {
               initialValue:initialValue.store_address?initialValue.store_address:undefined,
             })(<Input placeholder="请设置门店地址" />)}
           </FormItem>
         </Col>
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="门店状态">
+            {form.getFieldDecorator('state', {
+              initialValue:!initialValue.state?initialValue.state:1,
+            })(
+              <Select style={{ width: '100%' }} placeholder="请选择门店状态">
+                <Option value={1}>正常营业</Option>
+                <Option value={0}>停止营业</Option>
+              </Select>
+            )}
+          </FormItem>
+        </Col>
+
         {/* <Col xs={24} sm={12} md={12} lg={12} xl={12} >
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="开始营业时间">
             {form.getFieldDecorator('open_time', {
@@ -209,7 +223,7 @@ export default class StoreModal extends Component {
           </FormItem>
         </Col> */}
         <Divider orientation="left">收货地址</Divider>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="联系电话">
             {form.getFieldDecorator('delivery_mobile', {
               rules: [
@@ -222,7 +236,7 @@ export default class StoreModal extends Component {
             })(<Input placeholder="请设置联系电话" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="联系人">
             {form.getFieldDecorator('delivery_man', {
               rules: [
@@ -231,7 +245,7 @@ export default class StoreModal extends Component {
             })(<Input placeholder="请输入联系人" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="收货地址">
             {form.getFieldDecorator('china_address', {
               initialValue:initialValue.china_address?initialValue.china_address:undefined,
@@ -245,7 +259,7 @@ export default class StoreModal extends Component {
             )}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="详细地址">
             {form.getFieldDecorator('delivery_address', {
               rules: [
@@ -294,3 +308,6 @@ export default class StoreModal extends Component {
   );
   }
 }
+
+
+export default StoreModal

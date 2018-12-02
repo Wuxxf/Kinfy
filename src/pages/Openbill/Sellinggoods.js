@@ -293,7 +293,7 @@ const Express = Form.create()(props => {
             title="短信模版："
           >
             <p>
-              您的快递已经寄出，发件人：本店，承运人：{companyValue}， 
+              您的快递已经寄出，发件人：本店，承运人：{companyValue}，
               货运单号:{form.getFieldValue('express_id')}，
               有问题请致电{form.getFieldValue('store_phone')}。
             </p>
@@ -478,7 +478,7 @@ class Sellinggoods extends Component {
    * 折后应收
    */
   receChange = e => {
-    
+
     const { defaultPay, otherPayMoney, otherIncomeMoney } = this.state;
 
     if (isNaN(e)) {
@@ -566,7 +566,7 @@ class Sellinggoods extends Component {
     if(e===''){
       e=0;
     }
-   
+
     if (isNaN(e) || defaultPay) {
       e = 0;
     }
@@ -674,7 +674,7 @@ class Sellinggoods extends Component {
       count += tableData[i].number * tableData[i].price;
       goodsCount += tableData[i].number;
     }
-    
+
     this.setState({
       amount: count,
       // receivables: count,
@@ -950,7 +950,7 @@ class Sellinggoods extends Component {
           dispatch({
             type: 'openbill/fetchOrderNum', // 订单号
           });
-          
+
           dispatch({
             type: 'customer/customerinf',
             payload: {
@@ -975,7 +975,7 @@ class Sellinggoods extends Component {
       payload: {
         bar_code: value,
       },
-      callback: res => { 
+      callback: res => {
         if (!res.data) {
           message.error('货品不存在');
           return;
@@ -1304,10 +1304,10 @@ class Sellinggoods extends Component {
         key: 'operation',
         render: (text, record) => (
           <Popconfirm title="是否要删除此货品？" onConfirm={() => this.delGoods(record)}>
-            <Icon 
-              type="close-circle" 
-              theme="outlined" 
-              style={{fontSize:'16px',color:'red',cursor:'pointer'}} 
+            <Icon
+              type="close-circle"
+              theme="outlined"
+              style={{fontSize:'16px',color:'red',cursor:'pointer'}}
             />
           </Popconfirm>
         ),
@@ -1326,9 +1326,8 @@ class Sellinggoods extends Component {
         }
       >
         <Form className={styles.openbillForm}>
-          <Row gutter={8}>
-            <Card bordered={false} className={styles.openbillCard}>
-
+          <div className={commonStyle['rowBackground-div']}>
+            <Row gutter={8}>
               <Col xs={24} sm={12} md={12} lg={8} xl={5} xxl={4} style={{ marginTop: 5 }}>
                 <FormItem labelCol={{ span: 10 }} wrapperCol={{ span: 14 }} label="单　　号">
                   {form.getFieldDecorator('orderNum', {
@@ -1340,7 +1339,7 @@ class Sellinggoods extends Component {
               <Col xs={24} sm={12} md={12} lg={8} xl={5} xxl={4} style={{ marginTop: 5 }}>
                 <FormItem labelCol={{ span: 10 }} wrapperCol={{ span: 14 }} label="操&nbsp;&nbsp;作&nbsp;&nbsp;员">
                   <Select value={this.state.operatorId} placeholder='请选择员工' onChange={this.selectOperator}>{eeOption}</Select>
-                </FormItem>           
+                </FormItem>
               </Col>
 
               <Col xs={24} sm={12} md={12} lg={8} xl={5} xxl={4} style={{ marginTop: 5 }}>
@@ -1354,7 +1353,7 @@ class Sellinggoods extends Component {
                       disabledDate={this.disabledDate}
                     />
                   )}
-                </FormItem> 
+                </FormItem>
               </Col>
 
               <Col xs={24} sm={12} md={12} lg={8} xl={5} xxl={4} style={{ marginTop: 5 }}>
@@ -1368,14 +1367,14 @@ class Sellinggoods extends Component {
                       </Button>
                     </Tooltip>
                   )}
-                </FormItem> 
+                </FormItem>
               </Col>
+            </Row>
+          </div>
 
-            </Card>
-          </Row>
 
           <Row gutter={4}>
-            <Card bordered={false} className={styles.openbillCard}> 
+            <Card bordered={false} className={styles.openbillCard}>
 
               <Col xs={12} sm={12} md={12} lg={8} xl={4} style={{ marginTop: 5 }}>
                 <FormItem labelCol={{ span: 10 }} wrapperCol={{ span: 14 }} label="折后应收">
@@ -1394,7 +1393,7 @@ class Sellinggoods extends Component {
                       onChange={this.disChange}
                     />
                   )}
-                </FormItem>         
+                </FormItem>
               </Col>
 
               <Col xs={12} sm={12} md={12} lg={8} xl={4} style={{ marginTop: 5 }}>
@@ -1443,7 +1442,7 @@ class Sellinggoods extends Component {
               <Col xs={24} sm={12} md={12} lg={8} xl={4} style={{ marginTop: 5 }}>
                 <FormItem labelCol={{ span: 10 }} wrapperCol={{ span: 14 }} label="实　　收">
                   <span className={styles.orderNum}>{this.state.pay}元</span>
-                </FormItem>   
+                </FormItem>
               </Col>
 
               <Col xs={24} sm={12} md={12} lg={8} xl={4} style={{ marginTop: 5 }}>
@@ -1452,10 +1451,10 @@ class Sellinggoods extends Component {
                     className={styles.orderNum}
                     onChange={this.defaultPay}
                     checked={this.state.defaultPay}
-                  />   
-                </FormItem>        
+                  />
+                </FormItem>
               </Col>
-            </Card> 
+            </Card>
           </Row>
         </Form>
         <Card className={commonStyle.rowBackground}>
@@ -1475,13 +1474,13 @@ class Sellinggoods extends Component {
                       style={{width:'100%',marginRight:'5px'}}
                     />
                   </FormItem>
-                </Col> 
+                </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8} xxl={8} style={{ marginTop: 5 }}>
                   <FormItem style={{marginBottom:'0',textAlign:'center'}}>
                     <Button onClick={this.save} style={{marginRight:5}} type="primary">　保存　</Button>
                     <Button onClick={this.addGoods}>添加货品</Button>
                   </FormItem>
-                </Col>             
+                </Col>
                 <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8} style={{ marginTop: 5 }}>
                   <FormItem style={{marginBottom:'0',float:'right'}}>
                     <span className={styles.title} style={{ marginRight: 8 }}>
@@ -1506,7 +1505,7 @@ class Sellinggoods extends Component {
                 onChange={this.fetchRemarks}
                 autosize={{ minRows: 3, maxRows: 3 }}
               />
-            </Col>        
+            </Col>
             <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={8}>
               <div style={{paddingTop:'5px'}}>
                 <Row>
@@ -1568,18 +1567,18 @@ class Sellinggoods extends Component {
               <OtherIncomeAndPay {...payMethodPosts} />
             </Col>
             <Col xs={24} sm={12} md={12} lg={12} xl={7} xxl={7}>
-              <Input 
-                addonBefore="快递单号:"  
+              <Input
+                addonBefore="快递单号:"
                 addonAfter={
-                  <div 
-                    onClick={this.expressShow} 
-                    style={{cursor:'pointer',color:'#1890ff'}} 
+                  <div
+                    onClick={this.expressShow}
+                    style={{cursor:'pointer',color:'#1890ff'}}
                   >
                     填写快递单
                   </div>
                 }
-                value={this.state.expressOrederNum} 
-                disabled={true} 
+                value={this.state.expressOrederNum}
+                disabled={true}
               />
             </Col>
             <Col xs={24} sm={12} md={12} lg={12} xl={9} xxl={7}>

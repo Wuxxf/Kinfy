@@ -195,11 +195,20 @@ export async function querySystemBulletin() {
   return request('/api/noticestate/list');
 }
 
+// 公告添加
+export async function bulletinAdd(params) {
+  return request(`/api/systemnotice/add`,{
+    method: 'POST',
+    body: {
+      is_read: params.is_read,
+    },
+  });
+}
+
+
 // 公告详情
 export async function bulletinDetails(params) {
-  return request(`/api/systemnotice/${params.id}`,{
-    // method: 'POST',
-  });
+  return request(`/api/systemnotice/${params.id}`);
 }
 
 // 是否已读

@@ -15,12 +15,9 @@ import {
 const FormItem = Form.Item;
 const { Option } = Select;
 
-@connect(({ store, loading }) => ({
-  store,
-  loading: loading.models.store,
-}))
+@connect()
 @Form.create()
-export default class EmployeeModal extends Component {
+class EmployeeModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,17 +28,10 @@ export default class EmployeeModal extends Component {
     };
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'store/fetchRole',
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.store !== this.props.store) {
+    if (nextProps.roleData !== this.props.roleData) {
         this.setState({
-          roleData: nextProps.store.roleData,
+          roleData: nextProps.roleData,
         });
     }
     if (nextProps.initialValue !== this.props.initialValue) {
@@ -58,10 +48,9 @@ export default class EmployeeModal extends Component {
         this.setState({
           fileList:[],
         })
-      } 
+      }
     }
   }
-
 
   render() {
     const { title,visible, form, onOk, onCancel } =this.props;
@@ -112,7 +101,7 @@ export default class EmployeeModal extends Component {
         <div>选择员工头像</div>
       </div>
     );
-    
+
   return (
     <Modal
       title={title}
@@ -123,12 +112,12 @@ export default class EmployeeModal extends Component {
       width={800}
     >
       <Row gutter={18}>
-        <FormItem style={{margin:0}} >
+        <FormItem style={{margin:0}}>
           {form.getFieldDecorator('id', {
             initialValue:initialValue.id?initialValue.id:undefined,
         })(<span />)}
         </FormItem>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="员工名称">
             {form.getFieldDecorator('name', {
               rules: [{ required: true, message: '请输入员工名称' }],
@@ -136,7 +125,7 @@ export default class EmployeeModal extends Component {
             })(<Input placeholder="请输入员工名称" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="联系电话">
             {form.getFieldDecorator('mobile_phone', {
               rules: [
@@ -150,7 +139,7 @@ export default class EmployeeModal extends Component {
             })(<Input placeholder="请设置门店电话" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="邮箱地址">
             {form.getFieldDecorator('email', {
               rules:[{
@@ -161,7 +150,7 @@ export default class EmployeeModal extends Component {
             })(<Input placeholder="请输入邮箱地址" />)}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="角色权限">
             {form.getFieldDecorator('role_id', {
               initialValue:initialValue.role_id?initialValue.role_id:undefined,
@@ -179,24 +168,24 @@ export default class EmployeeModal extends Component {
           </FormItem>
         </Col>
         <Divider orientation="left">其他信息</Divider>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="是否在职">
             {form.getFieldDecorator('state', {
                 initialValue:initialValue.state?initialValue.state:1,
                 })(
-                  <Select style={{ width: '100%' }} >
+                  <Select style={{ width: '100%' }}>
                     <Option key={1} value={1}>在职</Option>
                     <Option key={0} value={0}>离职</Option>
                   </Select>
                 )}
           </FormItem>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="可否登录">
             {form.getFieldDecorator('is_login', {
                 initialValue:initialValue.is_login?initialValue.is_login:0,
                 })(
-                  <Select style={{ width: '100%' }} >
+                  <Select style={{ width: '100%' }}>
                     <Option key={1} value={1}>允许</Option>
                     <Option key={0} value={0}>禁止</Option>
                   </Select>
@@ -243,3 +232,5 @@ export default class EmployeeModal extends Component {
   );
   }
 }
+
+export default EmployeeModal

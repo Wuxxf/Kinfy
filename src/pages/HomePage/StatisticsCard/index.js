@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { routerRedux } from 'dva/router';
 import Yuan from '@/utils/Yuan';
+import { connect } from 'dva';
 import QueueAnim from 'rc-queue-anim';
 import {
   Col,
@@ -8,6 +9,7 @@ import {
 } from 'antd';
 import styles from '../Guide.less';
 
+@connect()
 class StatisticsCard extends Component {
   constructor(props){
     super(props)

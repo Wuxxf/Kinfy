@@ -30,6 +30,7 @@ class SelectedUsed extends Component {
         selectedUsed.splice(i,1)
       }
     }
+
     this.props.callback(selectedUsed)
 
   }

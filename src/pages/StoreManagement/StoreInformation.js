@@ -8,30 +8,29 @@ import {
   Modal,
   Form,
   message,
-  Card,
   Popconfirm,
 } from 'antd';
 import StoreModal from '@/components/StoreModal';
-import DescriptionList from '@/components/DescriptionList';
 import ColumnConfig from '@/components/ColumnConfig';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import styles from './index.less';
+import StoreDetails from './StoreDetails';
+
 import commonStyle from '../../global.less'; // 公共样式
 
-const { Description } = DescriptionList;
+const { confirm } = Modal;
 
 const statusMap = ['error', 'success'];
-const status = ['禁止', '允许'];
+const status = ['停止营业', '正常营业'];
 
 // colums
-const storeColumns = [    
+const storeColumns = [
     {
       title: '门店名称',
       defaultTitile:'门店名称', // 默认名
       visible: true, // 是否显示
       dataIndex: 'name',
       key: 'name',
-      width:64,
+
     },
     {
       title: '编号',
@@ -44,6 +43,7 @@ const storeColumns = [
       title: '门店logo',
       dataIndex: 'img_path',
       key: 'img_path',
+      width:64,
       defaultTitile:'门店logo', // 默认名
       visible: true, // 是否显示
     },
@@ -102,68 +102,7 @@ const storeColumns = [
 ];
 
 if (!JSON.parse(localStorage.getItem('storeColumn')))
-    localStorage.setItem('storeColumn',JSON.stringify(storeColumns));
-  
-// 门店详情
-const StoreDetails = (props=>{
-  const { initialValue ,visible,onCancel} = props ; 
-  let industryName= '';
-  let userName='';
-  let operationMode = '零售';
-  if(initialValue.industry){
-    industryName = initialValue.industry.name
-  }
-  if(initialValue.user){
-    userName = initialValue.user.name
-  }
-  if(initialValue.operation_mode===2){
-    operationMode = '批发';
-  }else if(initialValue.operation_mode===3){
-    operationMode = '零售兼批发';
-  }
-  
-  return(
-    <Modal
-      title='门店详情'
-      visible={visible}
-      onCancel={onCancel}
-      footer={null}
-      width={1000}
-    >
-      <DescriptionList size="large" title="基本信息" style={{ marginBottom: 32 }}>
-        <Description term="门店编号">{initialValue.store_no}</Description>
-        <Description term="门店名称">{initialValue.name}</Description>
-        <Description term="创建人">{userName}</Description>
-        <Description term="门店电话">{initialValue.mobile_phone}</Description>
-        <Description term="创建门店时间">{initialValue.created_at}</Description>
-        <Description term="状态">
-          {
-           initialValue.state===1
-           ?<Badge status="success" text="正常" />
-           :<Badge status="error" text="关闭" />
-          }
-        </Description>
-      </DescriptionList>
-      <Divider style={{ marginBottom: 32 }} />
-      <DescriptionList size="large" style={{ marginBottom: 32 }}>
-        <Description term="货品库存"><div>{initialValue.all_goods}</div></Description>
-        <Description term="货品数量"><div>{initialValue.use_goods}</div></Description>
-        <Description term="客户数量"><div>{initialValue.num_customer}</div></Description>
-        <Description term="当前员工数"><div>{initialValue.now_staff}</div></Description>
-        <Description term="最大员工数"><div>{initialValue.max_staff}</div></Description>
-        <Description term="供应商数量"><div>{initialValue.num_supplier}</div></Description>
-      </DescriptionList>
-      <Divider style={{ marginBottom: 32 }} />
-      <DescriptionList size="large" style={{ marginBottom: 32 }}>
-        {/* <Description term="开始营业时间">{initialValue.open_time}</Description>
-        <Description term="结束营业时间">{initialValue.close_time}</Description> */}
-        <Description term="所属行业"><div>{industryName}</div></Description>
-        <Description term="经营方式"><div>{operationMode}</div></Description>
-      </DescriptionList>
-      <Divider style={{ marginBottom: 32 }} />  
-    </Modal>
-  );
-})
+  localStorage.setItem('storeColumn',JSON.stringify(storeColumns));
 
 @connect(({ store, loading }) => ({
   store,
@@ -195,6 +134,7 @@ class StoreInformation extends Component {
     dispatch({
       type: 'store/fetchStoreInfo',
     });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -215,19 +155,18 @@ class StoreInformation extends Component {
 
   }
 
-  // 点击编辑门店按钮
+  // 编辑门店
   toggleEditable = record => {
+    this.recordStore(record.id)
     this.setState({
-      updateModalVisible: true,
-      initialValue: record,
-    });
+      updateModalVisible:true,
+    })
   };
 
   // 编辑门店隐藏
   updateModal = () => {
     this.setState({
       updateModalVisible: false,
-      initialValue: {},
     });
   };
 
@@ -260,28 +199,35 @@ class StoreInformation extends Component {
     this.setState({
       addModalVisible: !!flag,
     });
-  };
+  }
 
   // 删除选中的store
   del = record => {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'store/del',
-      payload: {
-        id: record.id,
-      },
-      callback: res => {
-        if (res.errcode) {
-          message.error(res.msg);
-        } else {
-          message.success(res.msg);
-          dispatch({
-            type: 'store/fetchStoreInfo',
-          });
-        }
+
+    confirm({
+      title: '此操作不可逆！是否删除',
+      iconType:'warning',
+      onOk() {
+        dispatch({
+          type: 'store/del',
+          payload: {
+            id: record.id,
+          },
+          callback: res => {
+            if (res.errcode) {
+              message.error(res.msg);
+            } else {
+              message.success(res.msg);
+              dispatch({
+                type: 'store/fetchStoreInfo',
+              });
+            }
+          },
+        });
       },
     });
-  };
+  }
 
   // 添加门店请求
   handleAdd = fields => {
@@ -303,37 +249,39 @@ class StoreInformation extends Component {
         }
       },
     });
-  };
+  }
 
   // 列配置返回
   newColumn = (data) => {
     localStorage.setItem('storeColumn', JSON.stringify(data));
     const getColumns = JSON.parse(localStorage.getItem('storeColumn'))
-    this.setState({
-      getColumns,
-    })
+    this.setState({getColumns})
   }
 
   // show 门店详情
   showDetails = (record) => {
+    this.recordStore(record.id)
+    this.setState({
+      detailsVisible:true,
+    })
+  };
+
+  // record 门店
+  recordStore = (id) =>{
     const { dispatch } = this.props;
     dispatch({
       type: 'store/fetchStoreDetails',
-      payload:{
-        id:record.id,
-      },
+      payload:{ id },
       callback:(res)=>{
         if(res.errcode){
           message.error('出错了！稍后再试')
         }else{
           this.setState({
             initialValue:res.data,
-            detailsVisible:true,
           })
         }
       },
     });
-
   }
 
   // 关闭详情
@@ -345,7 +293,7 @@ class StoreInformation extends Component {
 
   columns = (columns) =>{
     const newColumns = columns;
-    const { getColumns } =  this.state;
+    const { getColumns , storeData } =  this.state;
     newColumns.unshift({
       title: (<ColumnConfig minCol={4} columns={getColumns} defaultColumns={storeColumns} callback={this.newColumn} />),
       dataIndex: 'index',
@@ -358,19 +306,31 @@ class StoreInformation extends Component {
       dataIndex: 'operation',
       width:160,
       render: (text,record) => {
-          return (
-            <span>
-              <a onClick={() => this.showDetails(record)}>详情</a>
-              <Divider type="vertical" />
-              <a style={{color:'#faad14'}} onClick={() => this.toggleEditable(record)}>修改</a>
-              <Divider type="vertical" />
-              <Popconfirm title="是否要删除此行？" onConfirm={() => this.del(record)}>
-                <a style={{color:'#f5222d'}}>删除</a>
-              </Popconfirm>
-            </span>
+          if(storeData.length === 1){
+            return (
+              <span>
+                <a onClick={() => this.showDetails(record)}>详情</a>
+                <Divider type="vertical" />
+                <a style={{color:'#faad14'}} onClick={() => this.toggleEditable(record)}>修改</a>
+                <Divider type="vertical" />
+                <span style={{color:'#c4c4c4',cursor: 'no-drop'}}>删除</span>
+              </span>
+            );
+          }else{
+            return (
+              <span>
+                <a onClick={() => this.showDetails(record)}>详情</a>
+                <Divider type="vertical" />
+                <a style={{color:'#faad14'}} onClick={() => this.toggleEditable(record)}>修改</a>
+                <Divider type="vertical" />
+                <Popconfirm title="是否要删除此商店？" onConfirm={() => this.del(record)}>
+                  <a style={{color:'#f5222d'}}>删除</a>
+                </Popconfirm>
+              </span>
           );
+        }
       },
-    })  
+    })
     // 给列加上render等
     for (let i = 0; i < newColumns.length; i+=1) {
       if (newColumns[i].dataIndex === 'state') {
@@ -401,7 +361,7 @@ class StoreInformation extends Component {
 
     const addParentMethods = {
       visible:addModalVisible,
-      title:'添加门店', 
+      title:'添加门店',
       onOk: this.handleAdd,
       onCancel: this.addStore,
       industryData ,
@@ -417,8 +377,8 @@ class StoreInformation extends Component {
       destroyOnClose:true,
     };
 
-    const columns = [];  
-   
+    const columns = [];
+
     for (let i = 0; i < getColumns.length; i+=1) {
       if(getColumns[i].visible){
         columns.push(getColumns[i])
@@ -426,14 +386,12 @@ class StoreInformation extends Component {
     }
     this.columns(columns)
 
-    
-    
     return (
       <PageHeaderWrapper
         title="门店信息"
         action={<Button type="primary" onClick={() => this.addStore(true)}>添加门店</Button>}
       >
-        <Card className={styles.rowBackground}>
+        <div className={commonStyle['rowBackground-div']}>
           <Table
             className={commonStyle.tableAdaption}
             dataSource={storeData}
@@ -443,8 +401,8 @@ class StoreInformation extends Component {
             pagination={false}
             rowKey={record => record.id}
           />
-        </Card>
-        <StoreDetails visible={detailsVisible} onCancel={this.closeDetails} initialValue={initialValue} /> 
+        </div>
+        <StoreDetails visible={detailsVisible} onCancel={this.closeDetails} initialValue={initialValue} />
         <StoreModal {...addParentMethods}   />
         <StoreModal {...updateParentMethods}  />
       </PageHeaderWrapper>
@@ -452,4 +410,4 @@ class StoreInformation extends Component {
   }
 }
 
-export default  StoreInformation;
+export default StoreInformation;

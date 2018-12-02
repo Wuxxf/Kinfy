@@ -182,7 +182,7 @@ class CommonlyUsed extends Component {
     else
       return data.map(items=>(
         <Col xs={8} sm={3} md={3} lg={4} xl={12} key={items.id}>
-          <div style={{margin:'0 auto',width:56,cursor: 'pointer',userSelect:'none'}} onClick={()=>this.userClick()}>
+          <div style={{margin:'0 auto',width:56,cursor: 'pointer',userSelect:'none'}} onClick={()=>this.userClick(items.route)}>
             <MyIcon type={items.icon_name} style={{fontSize:56}} />
             <div>{items.name}</div>
             <br />
@@ -208,12 +208,12 @@ class CommonlyUsed extends Component {
 
   }
 
-  userClick = () =>{
+  userClick = (route) =>{
 
     this.count += 1;
     setTimeout(() => {
       if (this.count === 1) {
-        this.props.dispatch(routerRedux.push('/supplierManagement/supplierManagement'))
+        this.props.dispatch(routerRedux.push(route))
       } else if (this.count === 2) {
         this.setState({
           isDeling:true,

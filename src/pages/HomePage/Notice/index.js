@@ -3,32 +3,11 @@ import { connect } from 'dva';
 import {
   Icon,
   List,
-  Modal,
-  Divider,
 } from 'antd';
 import { routerRedux } from 'dva/router';
+import NoticeDetails from '@/components/NoticeDetails';
 import styles from '../Guide.less';
 import commonStyle from '../../../global.less'; // 公共样式
-
-const Details = (props => {
-  const {
-    visible,
-    handleOk,
-    handleCancel,
-    noticeDetail,
-  } = props;
-  return (
-    <Modal
-      title="公告详情"
-      visible={visible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-    >
-      <h2>标题：{noticeDetail.title}</h2>{noticeDetail.created_at}<Divider />
-      <div className={styles['notice-content']} dangerouslySetInnerHTML={{ __html:noticeDetail.content }} />
-    </Modal>
-  );
-})
 
 @connect(({ store }) => ({
   store,
@@ -77,7 +56,7 @@ class Notice extends Component {
 
   render() {
     const {
-      notice
+      notice,
     } = this.props;
 
     const detailsProps ={
@@ -88,13 +67,13 @@ class Notice extends Component {
     }
 
     return (
-      <div className={commonStyle["rowBackground-div"]} style={{height:'266px'}}>
+      <div className={commonStyle["rowBackground-div"]} style={{height:'258px'}}>
         <List
           header={<div><span className={styles.title}><Icon type="pushpin" theme="twoTone" style={{float:'right',fontSize:22}} />公告</span></div>}
           dataSource={notice}
           renderItem={item => (<List.Item onClick={()=>this.show(item.id)} style={{ cursor: 'pointer'}}>{item.title}</List.Item>)}
         />
-        <Details {...detailsProps} />
+        <NoticeDetails {...detailsProps} />
       </div>
     );
   }

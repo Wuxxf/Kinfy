@@ -16,7 +16,9 @@ class Name extends Component {
   }
 
   render() {
-    return <div ><AA name='aaaaa' /></div>;
+    return (
+      <div><AA name='aaaaa' /></div>
+    );
   }
 }
 

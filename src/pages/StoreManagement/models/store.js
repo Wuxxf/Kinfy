@@ -12,7 +12,8 @@ import {
   updateEmployee,
   delEmployee,
   queryRole,
-  bulletinDetails
+  bulletinDetails,
+  bulletinAdd,
 } from '@/services/api';
 
 export default {
@@ -69,7 +70,6 @@ export default {
       if (callback) callback(response);
     },
 
-
     // 公告详情
     *bulletinDetails({payload,callback }, { call, put }) {
       const response = yield call(bulletinDetails,payload);
@@ -80,6 +80,15 @@ export default {
       if (callback) callback(response);
     },
 
+    // 公告添加
+    *bulletinAdd({payload,callback }, { call, put }) {
+      const response = yield call(bulletinAdd,payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback(response);
+    },
 
     // 是否已读
     *isread({ payload, callback }, { call, put }) {

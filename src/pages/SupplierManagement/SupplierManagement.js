@@ -2,24 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import {
-  Row,
-  Col,
-  Button,
   Table,
   Input,
   Divider,
   Modal,
   Form,
-  Card,
   message,
   Popconfirm,
 } from 'antd';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Statistics from '@/components/Statistics';
 import SupplierAdd from '@/components/SupplierAdd';
 import ColumnConfig from '@/components/ColumnConfig';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import Search from './Search';
 import commonStyle from '../../global.less'; // 公共样式
-import styles from './SupplierManagement.less';
+
 
 const FormItem = Form.Item;
 
@@ -182,9 +179,7 @@ class supplierManagement extends Component {
     this.state = {
       current: 1, // 当前页数
       updatevisible: false, // 更新供应商组件显隐
-      isAllData: true, // 是否为全部数据
       supplierData: [], // 初始化供应商数据
-      searchText: '', // 搜索供应商名称Value
       updateData: {}, // 所更新的数据
       switchLoding: !Number(localStorage.getItem('switchLoding')), // 控制统计组件数据显隐
       getColumns,
@@ -221,70 +216,34 @@ class supplierManagement extends Component {
     }
   }
 
-  // 搜索框
-  onInputChange = e => {
-    this.setState({
-      searchText: e.target.value,
-    });
-  };
 
   // 条件搜索
-  onSearch = () => {
+  onSearch = (value) => {
     const { dispatch } = this.props;
-    const { isAllData } = this.state; 
-    const { searchText } = this.state;
+    const payload = {
+      page:1,
+      ...value,
+      'arrears': Number(value.arrears),
+    }
+
     dispatch({
       type: 'supplier/supplierinf',
-      payload: {
-        page: 1,
-        name: searchText,
-      },
+      payload,
     });
-    if (!isAllData) {
-      this.setState({
-        isAllData: true,
-      });
-    }
+
   };
 
   // 重置
   onReset = () => {
     const { dispatch } = this.props;
-    this.setState({
-      searchText: '',
-    });
     dispatch({
       type: 'supplier/supplierinf',
       payload: {
         page: 1,
-        name: '',
       },
     });
-  };
+  }
 
-  // 隐藏或显示供应商零欠款
-  setAllData = () => {
-    const { dispatch } = this.props;
-    const { isAllData } = this.state;
-    // 控制按钮文字
-    this.setState(
-      prevState => ({
-        isAllData: !prevState.isAllData,
-      }),
-      () => {
-        dispatch({
-          type: 'supplier/supplierinf',
-          payload: {
-            page: 1,
-            arrears: Number(isAllData),
-          },
-        });
-        this.setState({
-          current: 1,
-        });
-      }
-    );
-  };
 
   // 删除供应商(请求)
   delSupplier = record => {
@@ -394,7 +353,7 @@ class supplierManagement extends Component {
   // 统计开关
   switchange = checked => {
     this.setState({
-      switchLoding: !checked,
+      switchLoding: checked,
     });
     if (checked) {
       localStorage.setItem('switchLoding', 1);
@@ -402,7 +361,7 @@ class supplierManagement extends Component {
       localStorage.setItem('switchLoding', 0);
     }
   };
-  
+
   columns = (columns) =>{
     const { getColumns } = this.state;
     columns.unshift({
@@ -445,7 +404,7 @@ class supplierManagement extends Component {
           </span>
         );
       },
-    })  
+    })
     return columns;
   }
 
@@ -459,9 +418,6 @@ class supplierManagement extends Component {
       payTotal,
       getColumns,
       current,
-      display,
-      searchText,
-      isAllData,
     } = this.state;
     const { loading , dispatch} = this.props;
 
@@ -477,8 +433,8 @@ class supplierManagement extends Component {
       handleUpdate: this.handleUpdate,
     };
 
-    const columns = [];  
-   
+    const columns = [];
+
     for (let i = 0; i < getColumns.length; i++) {
       if(getColumns[i].visible){
         columns.push(getColumns[i])
@@ -491,35 +447,13 @@ class supplierManagement extends Component {
         title="供应商信息"
         action={<SupplierAdd callpackParent={() => this.supplierAdd()} />}
       >
-        <Card className={commonStyle.rowBackground} style={display}>
-          <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-            <Col sm={24} md={8}>
-              <Input
-                style={{ marginTop: 5 }}
-                addonBefore="供应商名称"
-                placeholder="搜索供应商名称"
-                value={searchText}
-                onChange={this.onInputChange}
-                onPressEnter={this.onSearch}
-              />
-            </Col>
-            <Col sm={24} md={14} className={styles.buttonGroup}>
-              <Button type="primary" onClick={this.onSearch} style={{ marginRight: 8 }}>
-                搜索
-              </Button>
-              <Button type="primary" onClick={this.onReset} style={{ marginRight: 8 }}>
-                重置
-              </Button>
-              <Button onClick={this.setAllData}>
-                {isAllData ? '隐藏零欠款供应商' : '显示全部供应商'}
-              </Button>
-            </Col>
-          </Row>
-        </Card>
-        <Card className={commonStyle.rowBackground} style={display}>
+        <div className={commonStyle['rowBackground-div']}>
+          <Search callback={this.onSearch} reset={this.onReset} />
+        </div>
+        <div className={commonStyle['rowBackground-div']}>
           <Statistics {...StatisticsMethods} />
-        </Card>
-        <Card className={commonStyle.rowBackground}>
+        </div>
+        <div className={commonStyle['rowBackground-div']}>
           <Table
             className={commonStyle.tableAdaption}
             columns={columns}
@@ -548,7 +482,7 @@ class supplierManagement extends Component {
               },
             }}
           />
-        </Card>
+        </div>
         <UpdateSupplier {...updateSupplierMethods} updatevisible={updatevisible} />
       </PageHeaderWrapper>
     );

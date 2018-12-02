@@ -34,7 +34,6 @@ class Charts extends Component {
         alias:'日',
         range: [0, 1],
       },
-
     };
     return (
       <div className={commonStyle['rowBackground-div']} style={{marginTop:'10px'}}>

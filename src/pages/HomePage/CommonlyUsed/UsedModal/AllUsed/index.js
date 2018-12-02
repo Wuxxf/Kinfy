@@ -11,8 +11,7 @@ import styles from './index.less'
 class AllUsed extends Component {
   constructor(props){
     super(props)
-
-    const { selectedUsed } =props
+    const { selectedUsed } = props
     // 处理已选择功能数组
     const selected = [];
     for (let i = 0; i < selectedUsed.length; i++) {
@@ -24,6 +23,24 @@ class AllUsed extends Component {
     this.state={
       selected,
     }
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+
+    const { selectedUsed } = nextProps
+
+    // 处理已选择功能数组
+    const selected = [];
+    for (let i = 0; i < selectedUsed.length; i++) {
+      const obj = Object.assign({},selectedUsed[i])
+      delete obj.id; delete obj.user_id;
+      const str = JSON.stringify(obj)
+      selected.push(str)
+    }
+    this.setState({
+      selected,
+    })
   }
 
   onChange = (checkedValues) => {
@@ -121,7 +138,7 @@ class AllUsed extends Component {
       route:'/customerManagement/customerManagement',
     },
     {
-      name:'供应商管理',
+      name:'供应商',
       icon_name:'icon-10',
       route:'/supplierManagement/supplierManagement',
     },
@@ -169,7 +186,7 @@ class AllUsed extends Component {
       <div>
         <Row>
           <div className={styles.tabsetwrap}>
-            <Checkbox.Group style={{ width: '100%' }} defaultValue={this.state.selected} onChange={this.onChange}>
+            <Checkbox.Group style={{ width: '100%' }} value={this.state.selected} onChange={this.onChange}>
               <Col xs={24} md={6}>
                 <div className={styles.tabsetitem}>
                   <List
