@@ -29,11 +29,15 @@ class EmployeeModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.roleData !== this.props.roleData) {
-        this.setState({
-          roleData: nextProps.roleData,
-        });
-    }
+    // if (nextProps.roleData !== this.props.roleData) {
+    //   console.log(nextProps.roleData)
+    //   this.setState({
+    //     roleData: nextProps.roleData,
+    //   });
+    // }
+    this.setState({
+      roleData: nextProps.roleData,
+    });
     if (nextProps.initialValue !== this.props.initialValue) {
       if(nextProps.initialValue.img_path){
         this.setState({
@@ -52,6 +56,12 @@ class EmployeeModal extends Component {
     }
   }
 
+  handleCancel = () =>{
+    this.setState({
+      previewVisible:false
+    })
+  }
+
   render() {
     const { title,visible, form, onOk, onCancel } =this.props;
     let {initialValue} = this.props;
@@ -59,7 +69,8 @@ class EmployeeModal extends Component {
     const okHandle = () => {
       form.validateFields((err, fieldsValue) => {
         if (err) return;
-        form.resetFields();
+        // form.resetFields();
+        console.log(fieldsValue)
         onOk(fieldsValue);
       });
     };
@@ -79,7 +90,7 @@ class EmployeeModal extends Component {
             };
           });
         },
-        onChange:({ fileList }) => this.setState({ fileList }),
+        onChange:({ fileList }) =>{ this.setState({ fileList })},
         beforeUpload: file => {
           this.setState(({ fileList }) => ({
             fileList: [...fileList, file],

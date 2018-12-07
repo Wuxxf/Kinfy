@@ -3,9 +3,7 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import {
   Table,
-  Input,
   Divider,
-  Modal,
   Form,
   message,
   Popconfirm,
@@ -15,152 +13,20 @@ import Statistics from '@/components/Statistics';
 import SupplierAdd from '@/components/SupplierAdd';
 import ColumnConfig from '@/components/ColumnConfig';
 import Search from './Search';
+import UpdateSupplier from './Update'
+import supplierColumns from './columns';
+
 import commonStyle from '../../global.less'; // 公共样式
 
-
-const FormItem = Form.Item;
 
 // 本地存储 统计数据是否显示
 if (localStorage.getItem('switchLoding') === null) {
   localStorage.setItem('switchLoding', 0);
 }
 
-// Table表头
-const supplierColumns = [
-  {
-    title: '供应商名称',
-    defaultTitile:'供应商名称', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'name',
-    key: 'name',
-  }, {
-    title: '应付款',
-    defaultTitile:'应付款', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'pay',
-    key: 'pay',
-  }, {
-    title: '联系人',
-    defaultTitile:'联系人', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'contacts',
-    key: 'contacts',
-  }, {
-    title: '手机号码',
-    defaultTitile:'手机号码', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'mobile_phone',
-    key: 'mobile_phone',
-  }, {
-    title: '创建时间',
-    defaultTitile:'创建时间', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'created_at',
-    key: 'created_at',
-  }, {
-    title: '地址',
-    defaultTitile:'地址', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'address',
-    key: 'address',
-  }, {
-    title: '备注',
-    defaultTitile:'备注', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'remarks',
-    key: 'remarks',
-  },
-];
 if (!JSON.parse(localStorage.getItem('supplierColumns')))
   localStorage.setItem('supplierColumns',JSON.stringify(supplierColumns));
 
-// 更新供应商组件
-const UpdateSupplier = Form.create()(props => {
-  const {
-    form,
-    updateData, // 选中更新的供应商数据
-    updateCancel,
-    updatevisible,
-    handleUpdate, // 更新请求
-  } = props;
-
-  const updatehandleOk = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-
-      handleUpdate(fieldsValue);
-      form.resetFields();
-    });
-  };
-
-  return (
-    <Modal
-      title="修改供应商信息"
-      destroyOnClose={true}
-      visible={updatevisible}
-      onOk={updatehandleOk}
-      onCancel={updateCancel}
-      okText="保存"
-    >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="供应商名称">
-        {form.getFieldDecorator('name', {
-          rules: [
-            { required: true, message: '请输入供应商名称' },
-            { whitespace: true, message: '供应商名称不能为空' },
-          ],
-          initialValue: updateData.name,
-        })(<Input placeholder="请输入供应商名称" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="应付欠款">
-        {form.getFieldDecorator('pay', {
-          rules: [
-            {
-              pattern: /^[0-9]+(.[0-9]{1,2})?$/,
-              message: '请输入正确金额',
-            },
-          ],
-          initialValue: updateData.pay,
-        })(<Input placeholder="请输入应付欠款" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="联系人">
-        {form.getFieldDecorator('contacts', {
-          rules: [
-            { required: true, message: '请输入联系人' },
-            { whitespace: true, message: '供应商名称不能为空' },
-          ],
-          initialValue: updateData.contacts,
-        })(<Input placeholder="请输入联系人" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="联系电话">
-        {form.getFieldDecorator('mobile_phone', {
-          rules: [
-            { required: true, message: '请设置联系电话' },
-            {
-              pattern: /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/,
-              message: '请输入正确的手机号码！',
-            },
-          ],
-          initialValue: updateData.mobile_phone,
-        })(<Input placeholder="请设置门店电话" maxLength={11} />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="供应商地址">
-        {form.getFieldDecorator('address', {
-          initialValue: updateData.address,
-        })(<Input placeholder="请输入供应商地址" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="供应商备注">
-        {form.getFieldDecorator('remarks', {
-          initialValue: updateData.remarks,
-        })(<Input placeholder="请输入供应商备注" />)}
-      </FormItem>
-    </Modal>
-  );
-});
 
 @connect(({ supplier, loading }) => ({
   supplier,
@@ -392,13 +258,12 @@ class supplierManagement extends Component {
             >
               进货单
             </Link>
-
             <Divider type="vertical" />
             <a onClick={() => this.updateSupplier(record)} style={{ color: '#FFC125' }}>
               修改
             </a>
             <Divider type="vertical" />
-            <Popconfirm title="是否要删除此行？" onConfirm={() => this.delSupplier(record)}>
+            <Popconfirm title="是否要删除此供应商？" onConfirm={() => this.delSupplier(record)}>
               <a style={{ color: '#FF4500' }}>删除</a>
             </Popconfirm>
           </span>
@@ -406,6 +271,21 @@ class supplierManagement extends Component {
       },
     })
     return columns;
+  }
+
+  pageOnChange = page => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'supplier/supplierinf',
+      payload: {
+        page,
+      },
+      callback: () => {
+        this.setState({
+          current: page,
+        });
+      },
+    });
   }
 
   render() {
@@ -419,7 +299,7 @@ class supplierManagement extends Component {
       getColumns,
       current,
     } = this.state;
-    const { loading , dispatch} = this.props;
+    const { loading } = this.props;
 
     const StatisticsMethods = {
       dataSource:[{title:'供应商数',total:supplierTotal,units:''},{title:'欠供应商款',total:payTotal,units:'元'}],
@@ -467,19 +347,7 @@ class supplierManagement extends Component {
               current,
               total: supplierTotal,
               defaultPageSize: 10,
-              onChange: page => {
-                dispatch({
-                  type: 'supplier/supplierinf',
-                  payload: {
-                    page,
-                  },
-                  callback: () => {
-                    this.setState({
-                      current: page,
-                    });
-                  },
-                });
-              },
+              onChange: this.pageOnChange,
             }}
           />
         </div>

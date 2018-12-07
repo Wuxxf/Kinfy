@@ -88,7 +88,7 @@ class ProductUnit extends Component {
     this.index += 1;
     this.setState({ unitsData: newData });
   };
-    
+
   // 点击取消
   cancel(e, id) {
     const { unitsData }=this.state;
@@ -177,6 +177,7 @@ class ProductUnit extends Component {
   saveRowAdd(e, id) {
     const newData = this.state.unitsData.map(item => ({ ...item }));
     const target = this.getRowById(id, newData);
+    console.log(target)
     e.persist();
     if (!target.name) {
       message.error('请填写完整成员信息。');

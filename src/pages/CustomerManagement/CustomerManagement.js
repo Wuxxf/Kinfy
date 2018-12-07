@@ -15,12 +15,13 @@ import {
   Icon,
   Checkbox,
   Select,
-  Card,
 } from 'antd';
 import CustomerAdd from '@/components/CustomerAdd';
 import Statistics from '@/components/Statistics';
 import ColumnConfig from '@/components/ColumnConfig';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import customerColumns from './customerColumns';
+
 import commonStyle from '../../global.less'; // 公共样式
 import styles from './CustomerManagement.less';
 
@@ -29,79 +30,6 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 
-// 表头全部列数据
-const customerColumns = [
-  {
-    title: '客户名称',
-    defaultTitile:'客户名称', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: '客户类型',
-    defaultTitile:'客户类型', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'customer_type',
-    key: 'customer_type',
-  },
-  {
-    title: '应收款',
-    defaultTitile:'应收款', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'pay',
-    key: 'pay',
-  },
-  {
-    title: '联系人',
-    defaultTitile:'联系人', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'contacts',
-    key: 'contacts',
-  },
-  {
-    title: '手机号码',
-    defaultTitile:'手机号码', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'mobile_phone',
-    key: 'mobile_phone',
-  },
-  {
-    title: '业务员',
-    defaultTitile:'业务员', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'operator',
-    key: 'operator',
-  },
-  {
-    title: '客户标签',
-    defaultTitile:'客户标签', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'label',
-    key: 'label',
-  },
-  {
-    title: '创建时间',
-    defaultTitile:'创建时间', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'created_at',
-    key: 'created_at',
-  },
-  {
-    title: '地址',
-    defaultTitile:'地址', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: '备注',
-    defaultTitile:'备注', // 默认名
-    visible: true, // 是否显示
-    dataIndex: 'remarks',
-    key: 'remarks',
-  },
-];
 if (!JSON.parse(localStorage.getItem('customerColumns')))
     localStorage.setItem('customerColumns',JSON.stringify(customerColumns));
 
@@ -120,9 +48,6 @@ const customerType = [
 if (localStorage.getItem('switchLoding') === null) {
   localStorage.setItem('switchLoding', 0);
 }
-
-
-
 
 // 更新客户组件
 const UpdateCustomer = Form.create()(props => {
@@ -304,7 +229,7 @@ class customerManagement extends Component {
     if(getColumns.length !== customerColumns.length){
         getColumns = customerColumns;
     }
-    
+
     this.state = {
       customerData: [], // 客户列表
       current:1,
@@ -394,7 +319,9 @@ class customerManagement extends Component {
    * 统计开关
    */
   switchange = checked => {
-    this.setState({ switchLoding: !checked });
+    this.setState({
+      switchLoding: checked
+    });
     if (checked) {
       localStorage.setItem('switchLoding', 1);
     } else {
@@ -443,7 +370,6 @@ class customerManagement extends Component {
               type: 'customer/customerinf',
               payload: {
                 page: this.state.current,
-                name: '',
               },
             });
           }
@@ -473,14 +399,12 @@ class customerManagement extends Component {
               type: 'customer/customerinf',
               payload: {
                 page: this.state.current - 1,
-                name: '',
               },
             });
           this.props.dispatch({
             type: 'customer/customerinf',
             payload: {
               page: this.state.current,
-              name: '',
             },
           });
         }
@@ -495,11 +419,13 @@ class customerManagement extends Component {
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      console.log(fieldsValue)
-      fieldsValue.page=1
+
       dispatch({
         type: 'customer/customerinf',
-        payload: fieldsValue,
+        payload: {
+          ...fieldsValue,
+          page : 1
+        },
       });
     });
   };
@@ -534,31 +460,27 @@ class customerManagement extends Component {
       width:235,
       key: 'operation',
       render: record => {
-        return (
-          <span>
-            {/* <a onClick={() => this.toggleEditable(record)} style={{ color: '#1890ff' }}>
-              报价
-            </a>
-            <Divider type="vertical" /> */}
-            {/* <a onClick={() => this.toggleEditable(record)} style={{ color: '#1890ff' }}>
-              报价单
-            </a> */}
-            {/* <Divider type="vertical" /> */}
-            <Link to={{pathname: '/openbill/salesreceipts',state: {name: record.name,id: record.id,pay:record.pay}}} style={{ color: '#1890ff' }}>
-              收款
-            </Link>
-            <Divider type="vertical" />
-            <a onClick={() => this.updatecustomer(record)} style={{ color: '#FFC125' }}>
-              修改
-            </a>
-            <Divider type="vertical" />
-            <Popconfirm title="是否要删除此行？" onConfirm={() => this.delcustomer(record)}>
-              <a style={{ color: '#FF4500' }}>删除</a>
-            </Popconfirm>
-          </span>
-        );
+        if(record.id === 1 || record.id === 2){
+          return null;
+        }else{
+          return (
+            <span>
+              <Link to={{pathname: '/openbill/salesreceipts',state: {name: record.name,id: record.id,pay:record.pay}}} style={{ color: '#1890ff' }}>
+                收款
+              </Link>
+              <Divider type="vertical" />
+              <a onClick={() => this.updatecustomer(record)} style={{ color: '#FFC125' }}>
+                修改
+              </a>
+              <Divider type="vertical" />
+              <Popconfirm title="是否要删除此行？" onConfirm={() => this.delcustomer(record)}>
+                <a style={{ color: '#FF4500' }}>删除</a>
+              </Popconfirm>
+            </span>
+          );
+        }
       },
-    })  
+    })
 
     // 给列加上render等
     for (let i = 0; i < columns.length; i++) {
@@ -653,7 +575,7 @@ class customerManagement extends Component {
                 </Select>
               )}
             </FormItem>
-           
+
           </Col>
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
@@ -714,7 +636,7 @@ class customerManagement extends Component {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  
+
   render() {
     const {
       customerData,
@@ -728,8 +650,8 @@ class customerManagement extends Component {
 
     const { loading } = this.props;
 
-const columns = [];  
-   
+    const columns = [];
+
     for (let i = 0; i < getColumns.length; i++) {
       if(getColumns[i].visible){
         columns.push(getColumns[i])
@@ -742,7 +664,6 @@ const columns = [];
       dataSource:[{title:'客户数',total:this.state.dataTotal,units:''},{title:'应收欠款',total:this.state.payTotal,units:'元'}],    //  array [{title:'xxx',total:xxxx,units:''}]
       switchLoding,  //  boolean state
       switchange:this.switchange,    //  function  开关改变
-
     };
 
     const updateCustomerMethods = {
@@ -758,13 +679,13 @@ const columns = [];
         title="客户信息"
         action={<CustomerAdd labelData={labelData} employeeData={employeeData} callpackParent={data => this.customerAdd(data)} />}
       >
-        <Card className={commonStyle.rowBackground}>
+        <div className={commonStyle['rowBackground-div']}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
-        </Card>
-        <Card className={commonStyle.rowBackground}>
+        </div>
+        <div className={commonStyle['rowBackground-div']}>
           <Statistics {...StatisticsMethods} />
-        </Card>
-        <Card className={commonStyle.rowBackground}>
+        </div>
+        <div className={commonStyle['rowBackground-div']}>
           <Table
             className={commonStyle.tableAdaption}
             loading={loading}
@@ -791,7 +712,7 @@ const columns = [];
             locale={{ emptyText: '暂无客户' }}
             bordered={true}
           />
-        </Card>
+        </div>
         <UpdateCustomer {...updateCustomerMethods} updatevisible={updatevisible} />
       </PageHeaderWrapper>
     );

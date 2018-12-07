@@ -29,6 +29,7 @@ const SiderMenuWrapper = props => {
         padding: 0,
         height: '100vh',
       }}
+      width={200}
     >
       <SiderMenu
         {...props}

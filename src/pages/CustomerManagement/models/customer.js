@@ -38,7 +38,7 @@ export default {
     *addLabel({ payload, callback }, { call, put }) {
       const response = yield call(addCustomerLabel, payload);
       yield put({
-        type: 'add',
+        type: 'save',
         payload: response,
       });
       if (callback) callback(response);
@@ -48,7 +48,7 @@ export default {
     *delLabel({ payload, callback }, { call, put }) {
       const response = yield call(delCustomerLabel, payload);
       yield put({
-        type: 'del',
+        type: 'save',
         payload: response,
       });
       if (callback) callback(response);
@@ -58,7 +58,7 @@ export default {
     *updateLabel({ payload, callback }, { call, put }) {
       const response = yield call(updateCustomerLabel, payload);
       yield put({
-        type: 'update',
+        type: 'save',
         payload: response,
       });
       if (callback) callback(response);
@@ -78,7 +78,7 @@ export default {
     *addCustomer({ payload, callback }, { call, put }) {
       const response = yield call(addCustomer, payload);
       yield put({
-        type: 'add',
+        type: 'save',
         payload: response,
       });
       if (callback) callback(response);
@@ -88,7 +88,7 @@ export default {
     *delCustomer({ payload, callback }, { call, put }) {
       const response = yield call(delCustomer, payload);
       yield put({
-        type: 'del',
+        type: 'save',
         payload: response,
       });
       if (callback) callback(response);
@@ -98,7 +98,7 @@ export default {
     *updateCustomer({ payload, callback }, { call, put }) {
       const response = yield call(updateCustomer, payload);
       yield put({
-        type: 'update',
+        type: 'save',
         payload: response,
       });
       if (callback) callback(response);
@@ -124,25 +124,13 @@ export default {
       };
     },
 
-    add(state, payload) {
+    save(state, payload) {
       return {
         ...state,
         ...payload,
       };
     },
 
-    del(state, payload) {
-      return {
-        ...state,
-        ...payload,
-      };
-    },
 
-    update(state, payload) {
-      return {
-        ...state,
-        ...payload,
-      };
-    },
   },
 };

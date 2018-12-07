@@ -49,14 +49,8 @@ const CreateAddEmpForm = Form.create()(props => {
               rules: [
                 { required: true, message: '请设置联系电话' },
                 {
-                  validator(rule, values, callback) {
-                    if (!!values && values !== '') {
-                      const mobile = /^((13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])+\d{8})$/;
-                      if (!mobile.test(values)) {
-                        callback('请输入正确的手机号码！');
-                      } else callback();
-                    } else callback();
-                  },
+                  pattern: /^1\d{10}$/,
+                  message: '请输入正确的手机号码！',
                 },
               ],
             })(<Input placeholder="请设置门店电话" />)}
@@ -93,7 +87,6 @@ const CreateAddEmpForm = Form.create()(props => {
         <Col span={12}>
           <FormItem labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} label="客户类型">
             {form.getFieldDecorator('customer_type', {
-              // rules: [{ required: true, message: '请选择客户类型' }],
               initialValue: customerType[0].name,
             })(
               <Select style={{ width: 150 }} placeholder="客户类型">
@@ -114,10 +107,10 @@ const CreateAddEmpForm = Form.create()(props => {
               rules: [{ required: true, message: '请选择业务员' }],
             })(
               <Select style={{ width: 150 }} placeholder="业务员">
-                {employeeData.map(id => {
+                {employeeData.map(item => {
                   return (
-                    <Option key={id.id} value={id.name}>
-                      {id.name}
+                    <Option key={item.id} value={item.id}>
+                      {item.name}
                     </Option>
                   );
                 })}
@@ -173,7 +166,7 @@ const CreateAddEmpForm = Form.create()(props => {
   store,
   customer,
 }))
-export default class SupplierAdd extends Component {
+class CustomerAdd extends Component {
   state = {
     modalVisible: false,
   };
@@ -239,3 +232,5 @@ export default class SupplierAdd extends Component {
     );
   }
 }
+
+export default CustomerAdd
