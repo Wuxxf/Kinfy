@@ -31,7 +31,7 @@ class CreateStore extends Component {
       industryData:[],
     }
   }
-  
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -51,7 +51,7 @@ class CreateStore extends Component {
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) return;
       this.props.dispatch({
-        type: 'login/add',
+        type: 'store/add',
         payload: fieldsValue,
         callback: res => {
           if (res.errcode) {
@@ -84,9 +84,9 @@ class CreateStore extends Component {
               {form.getFieldDecorator('name', {
                 rules: [{ required: true, message: '请输入门店名称' }],
               })(
-                <Input 
+                <Input
                   size='large'
-                  placeholder="请输入门店名称" 
+                  placeholder="请输入门店名称"
                   prefix={<Icon type="appstore" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 />
               )}
@@ -108,7 +108,7 @@ class CreateStore extends Component {
             <FormItem>
               {form.getFieldDecorator('industry_id', {
                 rules: [{ required: true, message: '请选择所属行业' }],
-                
+
               })(
                 <Select style={{ width: '100%' }} size='large' placeholder="请选择行业">
                   {this.state.industryData.map(id => {

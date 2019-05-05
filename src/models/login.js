@@ -15,6 +15,7 @@ export default {
   effects: {
     *login({ payload,callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+      yield put({type:'user',payload})
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -44,7 +45,6 @@ export default {
       // 没有门店
       if(response.store === 0){
         reloadAuthorized();
-
         yield put(routerRedux.push('/user/create-store'));
         // Login successfully
       }
@@ -57,10 +57,9 @@ export default {
         type: 'changeLoginStatus',
         payload: response,
       });
-      // console.log(response)
       if (response.status === 'ok') {
         reloadAuthorized();
-        yield put(routerRedux.push('/'));
+        yield put(routerRedux.push('/home-page/guide'));
       }
       // if (response.errcode === 0) {
       //   reloadAuthorized();
@@ -72,6 +71,7 @@ export default {
     *getCaptcha({ payload }, { call }) {
       yield call(getFakeCaptcha, payload);
     },
+
 
     *logout(_, { put,call }) {
       yield put({
@@ -110,5 +110,12 @@ export default {
         type: payload.type,
       };
     },
+
+    user(state, { payload }){
+      return {
+        ...state,
+        user:payload
+      };
+    }
   },
 };

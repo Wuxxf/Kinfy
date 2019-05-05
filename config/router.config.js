@@ -17,160 +17,10 @@ export default [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     // authority: ['admin', 'user'],
-    authority: [1, 2,'admin'],
+    authority: [1, 2,'admin',0],
     routes: [
       // dashboard
       { path: '/', redirect: '/home-page/guide' },
-      // {
-      //   path: '/dashboard',
-      //   // name: 'dashboard',
-      //   icon: 'dashboard',
-      //   routes: [
-      //     {
-      //       path: '/dashboard/analysis',
-      //       name: 'analysis',
-      //       component: './Dashboard/Analysis',
-      //     },
-      //     {
-      //       path: '/dashboard/monitor',
-      //       name: 'monitor',
-      //       component: './Dashboard/Monitor',
-      //     },
-      //     {
-      //       path: '/dashboard/workplace',
-      //       name: 'workplace',
-      //       component: './Dashboard/Workplace',
-      //     },
-      //   ],
-      // },
-      // forms
-      // {
-      //   path: '/form',
-      //   icon: 'form',
-      //   name: 'form',
-      //   routes: [
-      //     {
-      //       path: '/form/basic-form',
-      //       name: 'basicform',
-      //       component: './Forms/BasicForm',
-      //     },
-      //     {
-      //       path: '/form/step-form',
-      //       name: 'stepform',
-      //       component: './Forms/StepForm',
-      //       hideChildrenInMenu: true,
-      //       routes: [
-      //         {
-      //           path: '/form/step-form',
-      //           redirect: '/form/step-form/info',
-      //         },
-      //         {
-      //           path: '/form/step-form/info',
-      //           name: 'info',
-      //           component: './Forms/StepForm/Step1',
-      //         },
-      //         {
-      //           path: '/form/step-form/confirm',
-      //           name: 'confirm',
-      //           component: './Forms/StepForm/Step2',
-      //         },
-      //         {
-      //           path: '/form/step-form/result',
-      //           name: 'result',
-      //           component: './Forms/StepForm/Step3',
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       path: '/form/advanced-form',
-      //       name: 'advancedform',
-      //       authority: ['admin'],
-      //       component: './Forms/AdvancedForm',
-      //     },
-      //   ],
-      // },
-      // // list
-      // {
-      //   path: '/list',
-      //   icon: 'table',
-      //   name: 'list',
-      //   routes: [
-      //     {
-      //       path: '/list/table-list',
-      //       name: 'searchtable',
-      //       component: './List/TableList',
-      //     },
-      //     {
-      //       path: '/list/basic-list',
-      //       name: 'basiclist',
-      //       component: './List/BasicList',
-      //     },
-      //     {
-      //       path: '/list/card-list',
-      //       name: 'cardlist',
-      //       component: './List/CardList',
-      //     },
-      //     {
-      //       path: '/list/search',
-      //       name: 'searchlist',
-      //       component: './List/List',
-      //       routes: [
-      //         {
-      //           path: '/list/search',
-      //           redirect: '/list/search/articles',
-      //         },
-      //         {
-      //           path: '/list/search/articles',
-      //           name: 'articles',
-      //           component: './List/Articles',
-      //         },
-      //         {
-      //           path: '/list/search/projects',
-      //           name: 'projects',
-      //           component: './List/Projects',
-      //         },
-      //         {
-      //           path: '/list/search/applications',
-      //           name: 'applications',
-      //           component: './List/Applications',
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: '/profile',
-      //   name: 'profile',
-      //   icon: 'profile',
-      //   routes: [
-      //     // profile
-      //     {
-      //       path: '/profile/basic',
-      //       name: 'basic',
-      //       component: './Profile/BasicProfile',
-      //     },
-      //     {
-      //       path: '/profile/advanced',
-      //       name: 'advanced',
-      //       authority: ['admin'],
-      //       component: './Profile/AdvancedProfile',
-      //     },
-      //   ],
-      // },
-      // {
-      //   name: 'result',
-      //   icon: 'check-circle-o',
-      //   path: '/result',
-      //   routes: [
-      //     // result
-      //     {
-      //       path: '/result/success',
-      //       name: 'success',
-      //       component: './Result/Success',
-      //     },
-      //     { path: '/result/fail', name: 'fail', component: './Result/Error' },
-      //   ],
-      // },
       {
         // name: 'exception',
         icon: 'warning',
@@ -484,18 +334,18 @@ export default [
         ],
       },
       // 基础设置
-      {
-        name: 'setting',
-        icon: 'setting',
-        path: '/setting',
-        routes: [
-          {
-            path: '/setting/permissionSetting',
-            name: 'permissionSetting',
-            component: './Setting/PermissionSetting',
-          },
-        ],
-      },
+      // {
+      //   name: 'setting',
+      //   icon: 'setting',
+      //   path: '/setting',
+      //   routes: [
+      //     {
+      //       path: '/setting/permissionSetting',
+      //       name: 'permissionSetting',
+      //       component: './Setting/PermissionSetting',
+      //     },
+      //   ],
+      // },
       // 报表
       {
         name: 'reportForm',
@@ -507,36 +357,36 @@ export default [
             name: 'salesStatistics',
             component: './ReportForm/SalesStatistics',
           },
-          {
-            path: '/reportForm/purchaseStatistics',
-            name: 'purchaseStatistics',
-            // component: './ReportForm/PurchaseStatistics',
-          },
-          {
-            path: '/reportForm/profitStatistics',
-            name: 'profitStatistics',
-            // component: './ReportForm/ProfitStatistics',
-          },
-          {
-            path: '/reportForm/expenditureAnalysis',
-            name: 'expenditureAnalysis',
-            // component: './ReportForm/ExpenditureAnalysis',
-          },
-          {
-            path: '/reportForm/incomeAnalysis',
-            name: 'incomeAnalysis',
-            // component: './ReportForm/IncomeAnalysis',
-          },
-          {
-            path: '/reportForm/singleSalesRanking',
-            name: 'singleSalesRanking',
-            // component: './ReportForm/SingleSalesRanking',
-          },
-          {
-            path: '/reportForm/lossStatistics',
-            name: 'lossStatistics',
-            // component: './ReportForm/LossStatistics',
-          },
+          // {
+          //   path: '/reportForm/purchaseStatistics',
+          //   name: 'purchaseStatistics',
+          //   // component: './ReportForm/PurchaseStatistics',
+          // },
+          // {
+          //   path: '/reportForm/profitStatistics',
+          //   name: 'profitStatistics',
+          //   // component: './ReportForm/ProfitStatistics',
+          // },
+          // {
+          //   path: '/reportForm/expenditureAnalysis',
+          //   name: 'expenditureAnalysis',
+          //   // component: './ReportForm/ExpenditureAnalysis',
+          // },
+          // {
+          //   path: '/reportForm/incomeAnalysis',
+          //   name: 'incomeAnalysis',
+          //   // component: './ReportForm/IncomeAnalysis',
+          // },
+          // {
+          //   path: '/reportForm/singleSalesRanking',
+          //   name: 'singleSalesRanking',
+          //   // component: './ReportForm/SingleSalesRanking',
+          // },
+          // {
+          //   path: '/reportForm/lossStatistics',
+          //   name: 'lossStatistics',
+          //   // component: './ReportForm/LossStatistics',
+          // },
         ],
       },
       // 起始页

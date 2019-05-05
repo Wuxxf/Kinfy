@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { connect } from 'dva';
 import {
   Icon,
   Form,
@@ -12,10 +11,11 @@ import {
   Popover,
   Popconfirm,
 } from 'antd';
+
 import PopoverContent from './PopoverContent';
 
 @Form.create()
-export default class ColumnConfig extends Component {
+class ColumnConfig extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -34,11 +34,11 @@ export default class ColumnConfig extends Component {
       dataSource:nextProps.columns,
     });
     // console.log(nextProps.columns)
-  }  
+  }
 
   onSelectedRowKeysChange = (selectedRowKeys,selectedRows) => {
-    this.setState({ 
-      selectedRowKeys, 
+    this.setState({
+      selectedRowKeys,
       selectedRows ,
       isSelect:false,
     });
@@ -76,7 +76,7 @@ export default class ColumnConfig extends Component {
       }
 
     }
-    
+
 
     this.setState({
       dataSource:data,
@@ -101,14 +101,14 @@ export default class ColumnConfig extends Component {
     }
 
     if(!index) {message.warning('已置顶');return;}
-    const data  = dataSource 
+    const data  = dataSource
     const tmp = data.splice(0,1,data[index])[0]
     data[index] = tmp
 
     this.setState({
       dataSource:data,
     })
-    
+
     this.props.callback(data)
 
 
@@ -121,14 +121,14 @@ export default class ColumnConfig extends Component {
       if (selectedRows[0].key===dataSource[i].key)  index = i;
     }
     if(index+1===dataSource.length) {message.warning('已到底');return;}
-    const data  = dataSource 
+    const data  = dataSource
     const tmp = data.splice(dataSource.length-1,1,data[index])[0]
     data[index] = tmp
 
     this.setState({
       dataSource:data,
     })
-    
+
     this.props.callback(data)
 
   }
@@ -141,14 +141,14 @@ export default class ColumnConfig extends Component {
     }
 
     if(!index) {message.warning('已置顶');return;}
-    const data  = dataSource 
+    const data  = dataSource
     const tmp = data.splice(index-1,1,data[index])[0]
     data[index] = tmp
 
     this.setState({
       dataSource:data,
     })
-    
+
     this.props.callback(data)
 
   }
@@ -160,14 +160,14 @@ export default class ColumnConfig extends Component {
       if (selectedRows[0].key===dataSource[i].key)  index = i;
     }
     if(index+1===dataSource.length) {message.warning('已到底');return;}
-    const data  = dataSource 
+    const data  = dataSource
     const tmp = data.splice(index+1,1,data[index])[0]
     data[index] = tmp
 
     this.setState({
       dataSource:data,
     })
-    
+
     this.props.callback(data)
 
   }
@@ -180,7 +180,7 @@ export default class ColumnConfig extends Component {
       this.setState({
         isSelect:true,
       })
-    } 
+    }
     else {
       selectedRowKeys.push(record.key);
       this.setState({
@@ -217,7 +217,7 @@ export default class ColumnConfig extends Component {
     for (let i = 0; i < dataSource.length; i++) {
       if(dataSource[i].title === selectedRows[0].title){
         dataSource[i].title = values.title
-      } 
+      }
     }
     this.setState({
       dataSource,
@@ -233,7 +233,7 @@ export default class ColumnConfig extends Component {
     this.props.callback(defaultColumns)
   }
 
-  
+
 
   render() {
     const { selectedRowKeys,selectedRows ,dataSource} = this.state;
@@ -244,7 +244,7 @@ export default class ColumnConfig extends Component {
       onChange: this.onSelectedRowKeysChange,
     };
 
-    const columns = [ 
+    const columns = [
       {
         title: '列名',
         dataIndex: 'defaultTitile',
@@ -278,11 +278,11 @@ export default class ColumnConfig extends Component {
           style={{userSelect:'none'}}
         >
           <Row gutter={18}>
-            <Col  sm={24} md={16} lg={17} xl={19}>
-              <Table 
-                dataSource={dataSource} 
+            <Col sm={24} md={16} lg={17} xl={19}>
+              <Table
+                dataSource={dataSource}
                 rowSelection={rowSelection}
-                columns={columns} 
+                columns={columns}
                 bordered
                 pagination={false}
                 onRow={(record) => {
@@ -302,58 +302,58 @@ export default class ColumnConfig extends Component {
                 }}
               />
             </Col>
-            <Col sm={24} md={8} lg={7} xl={5}  >
-              <Button 
-                style={{margin:'0 0 2px 0 '}} 
-                onClick={()=>this.moveUp(selectedRows,dataSource)} 
-                disabled={this.state.isSelect} 
+            <Col sm={24} md={8} lg={7} xl={5}>
+              <Button
+                style={{margin:'0 0 2px 0 '}}
+                onClick={()=>this.moveUp(selectedRows,dataSource)}
+                disabled={this.state.isSelect}
                 block
               >
                 上移
               </Button>
-              <Button 
-                style={{margin:'2px 0 2px 0 '}} 
-                onClick={()=>this.moveDown(selectedRows,dataSource)} 
-                disabled={this.state.isSelect}  
+              <Button
+                style={{margin:'2px 0 2px 0 '}}
+                onClick={()=>this.moveDown(selectedRows,dataSource)}
+                disabled={this.state.isSelect}
                 block
               >
                 下移
               </Button>
-              <Button 
-                style={{margin:'2px 0 2px 0 '}} 
-                onClick={()=>this.setTop(selectedRows,dataSource)} 
-                disabled={this.state.isSelect}  
+              <Button
+                style={{margin:'2px 0 2px 0 '}}
+                onClick={()=>this.setTop(selectedRows,dataSource)}
+                disabled={this.state.isSelect}
                 block
               >
                 置顶
               </Button>
-              <Button 
-                style={{margin:'2px 0 2px 0 '}} 
-                onClick={()=>this.setDown(selectedRows,dataSource)} 
-                disabled={this.state.isSelect}   
+              <Button
+                style={{margin:'2px 0 2px 0 '}}
+                onClick={()=>this.setDown(selectedRows,dataSource)}
+                disabled={this.state.isSelect}
                 block
               >
                 置底
               </Button>
-              <Button 
-                style={{margin:'2px 0 2px 0 '}}  
-                onClick={()=>this.onchangeVisble(selectedRows)}  
-                disabled={this.state.isSelect}  
+              <Button
+                style={{margin:'2px 0 2px 0 '}}
+                onClick={()=>this.onchangeVisble(selectedRows)}
+                disabled={this.state.isSelect}
                 block
               >
                 切换显示
               </Button>
               <Popover
-                content={<PopoverContent  onRef={this.onRef} initialValue={selectedRows} saveNewName={this.saveNewName} />}
+                content={<PopoverContent onRef={this.onRef} initialValue={selectedRows} saveNewName={this.saveNewName} />}
                 placement="leftTop"
                 title="修改列显示名称"
                 trigger="click"
                 visible={this.state.popoverVisible}
                 onVisibleChange={this.handleVisibleChange}
               >
-                <Button 
-                  style={{margin:'2px 0 2px 0 '}} 
-                  disabled={this.state.isSelect} 
+                <Button
+                  style={{margin:'2px 0 2px 0 '}}
+                  disabled={this.state.isSelect}
                   block
                 >
                   修改名称
@@ -362,13 +362,15 @@ export default class ColumnConfig extends Component {
               <Popconfirm placement="leftTop" title='您确定要还原默认设置吗？' onConfirm={()=>this.defaults()} okText="确定" cancelText="取消">
                 <Button style={{margin:'2px 0 2px 0 '}} block>还原默认设置</Button>
               </Popconfirm>
-              <Button style={{margin:'20px 0 2px 0 '}} onClick={()=>this.handleCancel()}  block>关闭</Button>
+              <Button style={{margin:'20px 0 2px 0 '}} onClick={()=>this.handleCancel()} block>关闭</Button>
             </Col>
           </Row>
-          
+
         </Modal>
       </span>
     );
   }
 }
+
+export default ColumnConfig
 

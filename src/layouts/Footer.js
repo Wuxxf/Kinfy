@@ -10,19 +10,19 @@ const FooterView = () => (
         {
           key: 'Kinfy 首页',
           title: 'Kinfy 首页',
-          href: '/',
+          href: 'https://github.com/Wuxxf/Kinfy',
           blankTarget: true,
         },
         {
           key: '联系我们',
           title: <Icon type="customer-service" />,
-          href: '/',
+          href: 'https://github.com/Wuxxf/Kinfy',
           blankTarget: true,
         },
         {
           key: 'Kinfy 官网',
           title: 'Kinfy 官网',
-          href: '/',
+          href: 'https://github.com/Wuxxf/Kinfy',
           blankTarget: true,
         },
       ]}

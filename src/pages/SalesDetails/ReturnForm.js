@@ -187,7 +187,6 @@ const Conditional = Form.create()(props => {
           style={{ marginBottom: '0px' }}
         >
           {form.getFieldDecorator('operator_id', {
-            initialValue: 8,
           })(<Select style={{ width: '100%' }}>{eeOption}</Select>)}
         </FormItem>
       </Col>
@@ -464,7 +463,7 @@ class ReturnForm extends Component {
       fields.end = fields.order_date[1].format('YYYY-MM-DD HH:mm:ss');
     }
     delete fields.order_date
-    
+
     this.props.dispatch({
       type: 'openbill/fetchSalesReturn', // 获取销售单据
       payload:fields,
@@ -483,7 +482,7 @@ class ReturnForm extends Component {
     this.props.dispatch({
       type: 'openbill/fetchSalesReturn', // 获取销售单据
       payload: {
-        // goods_name: '', 
+        // goods_name: '',
         customer_id: '',
         operator_id: '',
         order_id: '',
@@ -518,7 +517,7 @@ class ReturnForm extends Component {
       },
     });
   };
-  
+
   /**
    * 更新单据返回
    */

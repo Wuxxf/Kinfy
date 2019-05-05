@@ -22,7 +22,7 @@ const plugins = [
       },
       // dynamicImport: {
       //   loadingComponent: './components/PageLoading/index',
-      // },   //  按需加载
+      // },
       ...(!process.env.TEST && os.platform() === 'darwin'
         ? {
             dll: {
@@ -69,6 +69,7 @@ export default {
   proxy: {
     '/api/': {
       target: 'http://118.25.122.55/',
+      // target: 'http://192.168.31.113',
       changeOrigin: true,
       // pathRewrite: { '^/server': '' },
     },    // no-mock

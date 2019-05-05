@@ -198,7 +198,6 @@ const Conditional = Form.create()(props => {
           style={{ marginBottom: '0px' }}
         >
           {form.getFieldDecorator('employee_name', {
-            initialValue: 8,
           })(<Select style={{ width: '100%' }}>{eeOption}</Select>)}
         </FormItem>
       </Col>
@@ -529,7 +528,7 @@ class ShippingOrder extends Component {
       },
     });
   };
-  
+
   /**
    * 更新单据返回
    */

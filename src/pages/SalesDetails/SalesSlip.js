@@ -207,7 +207,6 @@ const Conditional = Form.create()(props => {
           style={{ marginBottom: '0px' }}
         >
           {form.getFieldDecorator('operator_id', {
-            initialValue: operatorId,
           })(<Select style={{ width: '100%' }}>{eeOption}</Select>)}
         </FormItem>
       </Col>
@@ -268,7 +267,7 @@ const Conditional = Form.create()(props => {
 class SalesSlip extends Component {
   constructor(props){
     super(props);
-    let operatorId = 8; // 默认是当前登录的
+    let operatorId = 0; // 默认是当前登录的
     if(props.location.state){
       if(props.location.state.operator_id)
         operatorId  = props.location.state.operator_id
@@ -282,16 +281,16 @@ class SalesSlip extends Component {
       ],
       operatorId,
       switchLoding: !Number(localStorage.getItem('switchLoding')),
-  
+
       settingVisible: false, // 表头设置Modal
       checkedValue: checkedLocal, // 多选框的选中
-  
+
       employeeData: [], // 操作员(员工)
       expandesRowData: [], //  详情数据
       expandesRowKey: [], // 展开的行
       updateVisible: false, // 更新Modal
       current: 1, // 当前页数
-  
+
       buttonStyles: 'primary', // 控制点击查询时 时间按钮样式
     }
   }
@@ -302,7 +301,6 @@ class SalesSlip extends Component {
       type: 'openbill/fetchSales', // 获取销售单据
       payload: {
         page: this.state.current,
-        operator_id:this.state.operatorId,
       },
     });
   }
@@ -350,7 +348,7 @@ class SalesSlip extends Component {
             });
           }
         },
-      });   
+      });
     else{
       this.setState({
         expandesRowKey:[],
@@ -503,7 +501,7 @@ class SalesSlip extends Component {
     );
   };
 
-  
+
   // // 展开行变化时 调用
   // expandedRows = e => {
   //   if (e.length === 0) {
@@ -554,7 +552,7 @@ class SalesSlip extends Component {
       fields.end = fields.order_date[1].format('YYYY-MM-DD HH:mm:ss');
     }
     delete fields.order_date
-    
+
     this.props.dispatch({
       type: 'openbill/fetchSales', // 获取销售单据
       payload:fields,

@@ -151,6 +151,7 @@ export async function delCommonlyUsed(params) {
 
 /* ********* 门店管理 start ********* */
 export async function enterStore(params) {
+  console.log(params)
   return request(`/api/enterStore/${params}`);
 }
 // 添加门店

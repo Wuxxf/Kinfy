@@ -199,7 +199,6 @@ const Conditional = Form.create()(props => {
           style={{ marginBottom: '0px' }}
         >
           {form.getFieldDecorator('employee_name', {
-            initialValue: 8,
           })(<Select style={{ width: '100%' }}>{eeOption}</Select>)}
         </FormItem>
       </Col>
@@ -288,7 +287,7 @@ class ShippingOrder extends Component {
         purchasingData: tableDate,
         dataTotal: nextProps.openbill.dataTotal,
         purchaseTotal:nextProps.openbill.purchaseTotal , // 进货金额
-        creditTotal:nextProps.openbill.creditTotal, // 赊账金额 
+        creditTotal:nextProps.openbill.creditTotal, // 赊账金额
         payTotal:nextProps.openbill.payTotal, // 实付金额
       });
     }
